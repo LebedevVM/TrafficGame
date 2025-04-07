@@ -16,9 +16,6 @@ public class MapGraph {
     private Array<MapNode> zeroNodes = new Array<>();
     private Array<MapNode> firstNodes = new Array<>();
 
-    private static HashMap<MapNode, MapNodeTrio> zeroNodeMapNodeTrioHashMap = new HashMap<>();
-    private static HashMap<MapNode, MapNodeTrio> firstNodeMapNodeTrioHashMap = new HashMap<>();
-
     private int mapNodeDistance = Constants.mapNodeDistance;
 
     private ModelInstance modelInstance;
@@ -37,24 +34,15 @@ public class MapGraph {
                 firstNodes.add(firstMapNode);
 
                 MapNodeTrio mapNodeTrio = new MapNodeTrio(zeroMapNode, firstMapNode);
-                zeroNodeMapNodeTrioHashMap.put(zeroMapNode, mapNodeTrio);
-                firstNodeMapNodeTrioHashMap.put(firstMapNode, mapNodeTrio);
+
+                zeroMapNode.setMapNodeTrio(mapNodeTrio);
+                firstMapNode.setMapNodeTrio(mapNodeTrio);
             }
             startPos.add(addingVector);
             addingVector.setAngleDeg(-addingVector.angleDeg());
         }
 
 //        addingVector.setAngleDeg(30);
-    }
-
-    public static MapNodeTrio getMapNodeTrio (MapNode mapNode) {
-        if (zeroNodeMapNodeTrioHashMap.containsKey(mapNode)) {
-            return zeroNodeMapNodeTrioHashMap.get(mapNode);
-        }
-        if (firstNodeMapNodeTrioHashMap.containsKey(mapNode)) {
-            return firstNodeMapNodeTrioHashMap.get(mapNode);
-        }
-        return null;
     }
 
     public void click (Vector2 vector2) {

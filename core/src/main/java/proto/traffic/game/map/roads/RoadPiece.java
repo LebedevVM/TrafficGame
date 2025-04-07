@@ -22,7 +22,7 @@ public class RoadPiece extends MapNodePiece {
         super(mapNode);
 
         this.level = level;
-        this.mapNodeTrio = MapGraph.getMapNodeTrio(mapNode);
+        this.mapNodeTrio = mapNode.getMapNodeTrio();
 
         ModelBuilder modelBuilder = new ModelBuilder();
         model = modelBuilder.createCylinder(1, 1, 1, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)),

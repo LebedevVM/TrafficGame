@@ -18,6 +18,8 @@ public class MapNode {
     public Model model;
     public ModelInstance instance;
 
+    private MapNodeTrio mapNodeTrio;
+
     private boolean isOccupiedByRoad = false;
     private boolean isOccupiedByObstacle = false;
 
@@ -69,5 +71,19 @@ public class MapNode {
 
     public void setOccupiedByRoad(boolean occupiedByRoad) {
         isOccupiedByRoad = occupiedByRoad;
+    }
+
+    public MapNodeTrio getMapNodeTrio() {
+        return mapNodeTrio;
+    }
+
+    public void setMapNodeTrio(MapNodeTrio mapNodeTrio) {
+        this.mapNodeTrio = mapNodeTrio;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        MapNode mapNode = (MapNode) obj;
+        return mapNode.mapNodeTrio.equals(mapNodeTrio);
     }
 }

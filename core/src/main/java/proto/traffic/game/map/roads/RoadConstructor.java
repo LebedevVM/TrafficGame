@@ -68,6 +68,11 @@ public class RoadConstructor {
         if (mapNode == lastRoadPiece.getMapNode()) {
             return;
         }
+        if (bridgeTransition) {
+            if (lastRoadPiece.getMapNode().equals(mapNode)) {
+                return;
+            }
+        }
 
         if (!mapNode.isOccupiedByRoad()) {
             RoadPiece roadPiece = new RoadPiece(mapNode, level);
