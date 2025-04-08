@@ -8,13 +8,17 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNodePiece;
 
 public class RoadConnection {
     protected RoadPiece start;
     protected RoadPiece end;
+
+    protected Circle destructionCircle;
 
     private ModelInstance modelInstance;
 
@@ -35,6 +39,8 @@ public class RoadConnection {
             0, //(start.getPosition().y),
             (start.getPosition().z + end.getPosition().z)/2);
 
+        destructionCircle = new Circle(vector3.x, vector3.z, Constants.mapNodeDistance/2f);
+
         modelInstance = new ModelInstance(model);
         modelInstance.transform.setToTranslation(vector3);
         modelInstance.transform.rotate(new Vector3(0, 1, 0), (90 - vector2.angleDeg()));
@@ -42,6 +48,10 @@ public class RoadConnection {
 
     public void show (ModelBatch batch, Environment environment) {
         batch.render(modelInstance, environment);
+    }
+
+    public boolean contains (Vector2 click) {
+        return destructionCircle.contains(click);
     }
 
     @Override

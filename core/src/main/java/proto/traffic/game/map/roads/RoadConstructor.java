@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import proto.traffic.game.Starter;
+import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
 
@@ -15,7 +17,7 @@ public class RoadConstructor {
     private MapGraph mapGraph;
     private RoadGraph roadGraph;
 
-    private int level = 0;
+    private static int level = 0;
     private int roadLine = 1;
 
     private boolean bridgeTransition = false;
@@ -135,10 +137,10 @@ public class RoadConstructor {
         bridgeTransition = true;
     }
 
-    private Vector2 getPositionOnPlane (Vector2 position) {
-        Ray pickRay = cam.getPickRay(position.x, position.y);
+    public static Vector2 getPositionOnPlane (Vector2 position) {
+        Ray pickRay = Starter.cam.getPickRay(position.x, position.y);
 
-        Plane plane = new Plane(new Vector3(0, 1, 0), Vector3.Zero);
+        Plane plane = new Plane(new Vector3(0, 1 + level*Constants.bridgeHeight, 0), Vector3.Zero);
         Vector3 intersection = new Vector3();
         if (Intersector.intersectRayPlane(pickRay, plane, intersection)) {
             return new Vector2(intersection.x, intersection.z);

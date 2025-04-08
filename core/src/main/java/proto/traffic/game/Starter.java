@@ -14,12 +14,13 @@ import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.input.Adapter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.roads.RoadConstructor;
+import proto.traffic.game.map.roads.RoadDestructor;
 import proto.traffic.game.map.roads.RoadGraph;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Starter extends ApplicationAdapter {
     public Environment environment;
-    public PerspectiveCamera cam;
+    public static PerspectiveCamera cam;
     public CameraInputController camController;
     public ModelBatch modelBatch;
     public Model model;
@@ -28,7 +29,8 @@ public class Starter extends ApplicationAdapter {
 
     public Array<ModelInstance> instances = new Array<>();
 
-    public RoadConstructor roadConstructor;
+    private RoadConstructor roadConstructor;
+    private RoadDestructor roadDestructor;
 
     MapGraph mapGraph;
     private RoadGraph roadGraph = new RoadGraph();
@@ -51,6 +53,7 @@ public class Starter extends ApplicationAdapter {
         cam.update();
 
         roadConstructor = new RoadConstructor(mapGraph, roadGraph, cam);
+        roadDestructor = new RoadDestructor(roadGraph);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         model = modelBuilder.createBox(50f, 1f, 50f,
@@ -77,6 +80,11 @@ public class Starter extends ApplicationAdapter {
     }
 
     boolean level = true;
+    boolean destruction = false;
+
+    public void setDestruction (boolean destruction) {
+        this.destruction = destruction;
+    }
 
     public void changeLevel () {
         if (level) {
@@ -90,10 +98,18 @@ public class Starter extends ApplicationAdapter {
     }
 
     public void mouseDragged (Vector2 position) {
+        if (destruction) {
+            roadDestructor.mouseDragged(position);
+            return;
+        }
         roadConstructor.mouseDragged(position);
     }
 
     public void hitSomething (Vector2 screenCoords) {
+        if (destruction) {
+            roadDestructor.mouseTouchDown(screenCoords);
+            return;
+        }
         roadConstructor.mouseTouchDown(screenCoords);
 
 //        // If you are only using a camera

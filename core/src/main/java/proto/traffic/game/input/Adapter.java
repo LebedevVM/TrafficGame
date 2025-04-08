@@ -14,6 +14,10 @@ public class Adapter extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (Input.Keys.SHIFT_LEFT == keycode) {
+            starter.setDestruction(true);
+            return false;
+        }
         starter.changeLevel();
 
         return false;
@@ -21,6 +25,9 @@ public class Adapter extends InputAdapter {
 
     @Override
     public boolean keyUp(int keycode) {
+        if (Input.Keys.SHIFT_LEFT == keycode) {
+            starter.setDestruction(false);
+        }
         return super.keyUp(keycode);
     }
 

@@ -5,6 +5,10 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.MapNodePiece;
@@ -16,6 +20,10 @@ public class RoadPiece extends MapNodePiece {
 
     private MapNodeTrio mapNodeTrio;
 
+    private Circle destructionCircle;
+
+    private Array<RoadConnection> roadConnections = new Array<>();
+
     private int level;
 
     public RoadPiece (MapNode mapNode, int level) {
@@ -23,6 +31,8 @@ public class RoadPiece extends MapNodePiece {
 
         this.level = level;
         this.mapNodeTrio = mapNode.getMapNodeTrio();
+
+        destructionCircle = new Circle(mapNode.getPosition().x, mapNode.getPosition().z, Constants.roadRadius);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         model = modelBuilder.createCylinder(1, 1, 1, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
@@ -39,12 +49,24 @@ public class RoadPiece extends MapNodePiece {
         return roadPiece.getMapNode().isInRange(mapNode);
     }
 
-    public int getLevel() {
+    public int getLevel () {
         return level;
     }
 
+    public boolean contains (Vector2 click) {
+        return destructionCircle.contains(click);
+    }
+
+    public Array<RoadConnection> getRoadConnections () {
+        return roadConnections;
+    }
+
+    public void addRoadConnection (RoadConnection roadConnection) {
+        roadConnections.add(roadConnection);
+    }
+
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals (Object obj) {
         RoadPiece roadPiece = (RoadPiece) obj;
         return roadPiece.mapNodeTrio.equals(mapNodeTrio);
     }
