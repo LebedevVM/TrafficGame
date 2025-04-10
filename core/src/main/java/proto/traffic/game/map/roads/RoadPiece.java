@@ -13,6 +13,9 @@ import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.MapNodePiece;
 import proto.traffic.game.map.MapNodeTrio;
+import proto.traffic.game.map.path.PathGraph;
+import proto.traffic.game.map.path.batch.PathNodeBatch;
+import proto.traffic.game.map.path.batch.PathNodeBatchFactory;
 
 public class RoadPiece extends MapNodePiece {
     private Model model;
@@ -24,15 +27,21 @@ public class RoadPiece extends MapNodePiece {
 
     private Array<RoadConnection> roadConnections = new Array<>();
 
+    private PathNodeBatch pathNodeBatch;
+    private PathGraph pathGraph;
+
     private int level;
 
-    public RoadPiece (MapNode mapNode, int level) {
+    public RoadPiece (PathGraph pathGraph, MapNode mapNode, int level, int lines) {
         super(mapNode);
 
+        this.pathGraph = pathGraph;
         this.level = level;
         this.mapNodeTrio = mapNode.getMapNodeTrio();
 
         destructionCircle = new Circle(mapNode.getPosition().x, mapNode.getPosition().z, Constants.roadRadius);
+
+        pathNodeBatch = PathNodeBatchFactory.generatePathNodeBatch(mapNode.getPosition(), pathGraph, lines);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         model = modelBuilder.createCylinder(1, 1, 1, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
@@ -63,6 +72,14 @@ public class RoadPiece extends MapNodePiece {
 
     public void addRoadConnection (RoadConnection roadConnection) {
         roadConnections.add(roadConnection);
+    }
+
+    public PathNodeBatch getPathNodeBatch() {
+        return pathNodeBatch;
+    }
+
+    public PathGraph getPathGraph() {
+        return pathGraph;
     }
 
     @Override

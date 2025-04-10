@@ -10,24 +10,27 @@ import proto.traffic.game.Starter;
 import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
+import proto.traffic.game.map.path.PathGraph;
 
 public class RoadConstructor {
     public PerspectiveCamera cam;
 
     private MapGraph mapGraph;
     private RoadGraph roadGraph;
+    private PathGraph pathGraph;
 
     private static int level = 0;
-    private int roadLine = 1;
+    private int roadLine = 2;
 
     private boolean bridgeTransition = false;
 
     private RoadPiece lastRoadPiece;
     private MapNode lastMapNode;
 
-    public RoadConstructor(MapGraph mapGraph, RoadGraph roadGraph, PerspectiveCamera cam) {
+    public RoadConstructor(MapGraph mapGraph, RoadGraph roadGraph, PathGraph pathGraph, PerspectiveCamera cam) {
         this.mapGraph = mapGraph;
         this.roadGraph = roadGraph;
+        this.pathGraph = pathGraph;
         this.cam = cam;
     }
 
@@ -42,7 +45,7 @@ public class RoadConstructor {
             return;
         }
         if (!mapNode.isOccupiedByRoad()) {
-            RoadPiece roadPiece = new RoadPiece(mapNode, level);
+            RoadPiece roadPiece = new RoadPiece(pathGraph, mapNode, level, roadLine);
             roadGraph.addRoadPiece(mapNode, roadPiece);
 
             lastRoadPiece = roadPiece;
@@ -77,7 +80,7 @@ public class RoadConstructor {
         }
 
         if (!mapNode.isOccupiedByRoad()) {
-            RoadPiece roadPiece = new RoadPiece(mapNode, level);
+            RoadPiece roadPiece = new RoadPiece(pathGraph, mapNode, level, roadLine);
             roadGraph.addRoadPiece(mapNode, roadPiece);
 
             roadGraph.addRoadConnection(makeRoadConnection(lastRoadPiece, roadPiece));

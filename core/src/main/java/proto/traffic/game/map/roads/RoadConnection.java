@@ -11,8 +11,10 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNodePiece;
+import proto.traffic.game.map.path.PathNode;
 
 public class RoadConnection {
     protected RoadPiece start;
@@ -39,11 +41,18 @@ public class RoadConnection {
             0, //(start.getPosition().y),
             (start.getPosition().z + end.getPosition().z)/2);
 
-        destructionCircle = new Circle(vector3.x, vector3.z, Constants.mapNodeDistance/2f);
+        destructionCircle = new Circle(vector3.x, vector3.z, Constants.mapNodeDistance/4f);
 
         modelInstance = new ModelInstance(model);
         modelInstance.transform.setToTranslation(vector3);
-        modelInstance.transform.rotate(new Vector3(0, 1, 0), (90 - vector2.angleDeg()));
+        modelInstance.transform.rotate(new Vector3(0, 1, 0), (90 - Math.round(vector2.angleDeg())));
+
+        System.out.println(Math.round(vector2.angleDeg()));
+
+        int degrees = Math.round(vector2.angleDeg());
+        Array<PathNode> startPathNodes = start.getPathNodeBatch().getPathNodeByDegrees(degrees);
+        Array<PathNode> endPathNodes = end.getPathNodeBatch().getPathNodeByDegrees(degrees);
+        start.getPathGraph().connectNodes(startPathNodes, endPathNodes);
     }
 
     public void show (ModelBatch batch, Environment environment) {

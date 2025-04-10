@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.input.Adapter;
 import proto.traffic.game.map.MapGraph;
+import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.roads.RoadConstructor;
 import proto.traffic.game.map.roads.RoadDestructor;
 import proto.traffic.game.map.roads.RoadGraph;
@@ -34,6 +35,7 @@ public class Starter extends ApplicationAdapter {
 
     MapGraph mapGraph;
     private RoadGraph roadGraph = new RoadGraph();
+    private PathGraph pathGraph = new PathGraph();
 
     @Override
     public void create() {
@@ -52,7 +54,7 @@ public class Starter extends ApplicationAdapter {
         cam.far = 300f;
         cam.update();
 
-        roadConstructor = new RoadConstructor(mapGraph, roadGraph, cam);
+        roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
         roadDestructor = new RoadDestructor(roadGraph);
 
         ModelBuilder modelBuilder = new ModelBuilder();
@@ -146,6 +148,7 @@ public class Starter extends ApplicationAdapter {
         roadGraph.show(modelBatch, environment);
 
         mapGraph.show(modelBatch, environment);
+        pathGraph.show(modelBatch, environment);
 
         modelBatch.end();
     }
