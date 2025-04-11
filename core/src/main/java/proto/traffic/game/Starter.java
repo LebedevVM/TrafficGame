@@ -85,6 +85,7 @@ public class Starter extends ApplicationAdapter {
 
     public void setDestruction (boolean destruction) {
         this.destruction = destruction;
+        roadConstructor.setLastRoadPieceAsNull();
     }
 
     public void increaseLevel () {

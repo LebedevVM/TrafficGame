@@ -20,7 +20,7 @@ public class RoadConstructor {
     private PathGraph pathGraph;
 
     private static int level = 0;
-    private int roadLine = 2;
+    private int roadLine = 1;
 
     private boolean bridgeTransition = false;
     private boolean secondToZeroTransition = false;
@@ -174,6 +174,10 @@ public class RoadConstructor {
         }
 
         bridgeTransition = true;
+    }
+
+    public void setLastRoadPieceAsNull () {
+        lastRoadPiece = null;
     }
 
     public static Vector2 getPositionOnPlane (Vector2 position) {

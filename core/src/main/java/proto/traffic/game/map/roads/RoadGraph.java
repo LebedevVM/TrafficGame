@@ -63,11 +63,13 @@ public class RoadGraph {
         for (RoadConnection roadConnection : roadPiece.getRoadConnections()) {
             destroyRoadConnection(roadConnection);
         }
+        roadPiece.getPathNodeBatch().destroy();
         roadPieces.remove(roadPiece.getMapNode());
     }
 
     public void destroyRoadConnection (RoadConnection roadConnection) {
         roadConnections.removeValue(roadConnection, true);
+        roadConnection.destroyPathConnections();
     }
 
     public void show (ModelBatch batch, Environment environment) {

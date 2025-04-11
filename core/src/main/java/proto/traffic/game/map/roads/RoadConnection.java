@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNodePiece;
+import proto.traffic.game.map.path.PathConnection;
 import proto.traffic.game.map.path.PathNode;
 
 public class RoadConnection {
@@ -25,6 +26,8 @@ public class RoadConnection {
     protected Circle destructionCircle;
 
     private ModelInstance modelInstance;
+
+    private Array<PathConnection> pathConnections = new Array<>();
 
     public RoadConnection (RoadPiece start, RoadPiece end, Model model) {
         this.start = start;
@@ -55,7 +58,13 @@ public class RoadConnection {
     public void connectPathNodes () {
         Array<PathNode> startPathNodes = start.getPathNodeBatch().getPathNodeByDegrees(degrees);
         Array<PathNode> endPathNodes = end.getPathNodeBatch().getPathNodeByDegrees(degrees);
-        start.getPathGraph().connectNodes(startPathNodes, endPathNodes);
+        for (PathConnection pathConnection : start.getPathGraph().connectNodes(startPathNodes, endPathNodes)) {
+            pathConnections.add(pathConnection);
+        }
+    }
+
+    public void destroyPathConnections () {
+        start.getPathGraph().destroyNodeConnection(pathConnections);
     }
 
     public void show (ModelBatch batch, Environment environment) {

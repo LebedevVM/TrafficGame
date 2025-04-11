@@ -11,6 +11,9 @@ public class PathNodeBatchFactory {
         if (lines == 2) {
             return new DoublePathNodeBatch(position, pathGraph);
         }
+        if (lines == 3) {
+            return new TriplePathNodeBatch(position, pathGraph);
+        }
         return null;
     }
 }
