@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import proto.traffic.game.cars.CarController;
 import proto.traffic.game.input.Adapter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.path.PathGraph;
@@ -36,6 +37,7 @@ public class Starter extends ApplicationAdapter {
     MapGraph mapGraph;
     private RoadGraph roadGraph = new RoadGraph();
     private PathGraph pathGraph = new PathGraph();
+    private CarController carController;
 
     @Override
     public void create() {
@@ -54,21 +56,9 @@ public class Starter extends ApplicationAdapter {
         cam.far = 300f;
         cam.update();
 
+        carController = new CarController(pathGraph);
         roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
         roadDestructor = new RoadDestructor(roadGraph);
-
-        ModelBuilder modelBuilder = new ModelBuilder();
-        model = modelBuilder.createBox(50f, 1f, 50f,
-            new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        instance = new ModelInstance(model);
-
-        model1 = modelBuilder.createBox(10f, 10f, 10f,
-            new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-
-        model1 = modelBuilder.createSphere(5, 5, 5, 10, 10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
 
         camController = new CameraInputController(cam);
 
@@ -110,23 +100,10 @@ public class Starter extends ApplicationAdapter {
             return;
         }
         roadConstructor.mouseTouchDown(screenCoords);
+    }
 
-//        // If you are only using a camera
-//        Ray pickRay = cam.getPickRay(screenCoords.x, screenCoords.y);
-//        // If your camera is managed by a viewport
-////        Ray pickRay = viewport.getPickRay(screenCoords.x, screenCoords.y);
-//
-//        // we want to check a collision only on a certain plane, in this case the X/Z plane
-//        Plane plane = new Plane(new Vector3(0, 1, 0), Vector3.Zero);
-//        Vector3 intersection = new Vector3();
-//        if (Intersector.intersectRayPlane(pickRay, plane, intersection)) {
-////            ModelInstance instance1 = new ModelInstance(model1);
-////            instance1.transform.setToTranslation(intersection);
-////            instances.add(instance1);
-//            mapGraph.click(new Vector2(intersection.x, intersection.z));
-//        } else {
-//            // Not hit
-//        }
+    public void addCar () {
+        carController.addCar();
     }
 
     @Override
@@ -136,6 +113,8 @@ public class Starter extends ApplicationAdapter {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        carController.render(Gdx.graphics.getDeltaTime());
+
         modelBatch.begin(cam);
 //        modelBatch.render(instance, environment);
 
@@ -143,6 +122,7 @@ public class Starter extends ApplicationAdapter {
             modelBatch.render(modelInstance, environment);
         }
         roadGraph.show(modelBatch, environment);
+        carController.show(modelBatch, environment);
 
         mapGraph.show(modelBatch, environment);
         pathGraph.show(modelBatch, environment);

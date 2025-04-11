@@ -14,6 +14,10 @@ public class Adapter extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (Input.Keys.SPACE == keycode) {
+            starter.addCar();
+            return false;
+        }
         if (Input.Keys.SHIFT_LEFT == keycode) {
             starter.setDestruction(true);
             return false;

@@ -1,12 +1,14 @@
 package proto.traffic.game.map.path;
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.ai.pfa.GraphPath;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import sun.util.resources.cldr.ext.CurrencyNames_en_BB;
 
 public class PathGraph  implements IndexedGraph<PathNode> {
     PathHeuristic pathHeuristic = new PathHeuristic();
@@ -14,9 +16,20 @@ public class PathGraph  implements IndexedGraph<PathNode> {
     Array<PathNode> nodes = new Array<>();
     ObjectMap<PathNode, Array<Connection<PathNode>>> pathNodeMap = new ObjectMap<>();
 
+    private int lastNodeIndex = 0;
+
+    public GraphPath<PathNode> findPath (PathNode startCity, PathNode goalCity) {
+        GraphPath<PathNode> path = new DefaultGraphPath<>();
+        new IndexedAStarPathFinder<>(this).searchNodePath(startCity, goalCity, pathHeuristic, path);
+        return path;
+    }
+
     public void addNode (PathNode pathNode) {
         nodes.add(pathNode);
         pathNodeMap.put(pathNode, new Array<>());
+
+        pathNode.setIndex(lastNodeIndex);
+        lastNodeIndex ++;
     }
 
     public void addNode (Array<PathNode> pathNodes) {
@@ -25,9 +38,18 @@ public class PathGraph  implements IndexedGraph<PathNode> {
         }
     }
 
+    public PathNode getFirstPathNode () {
+        return nodes.first();
+    }
+
+    public PathNode getLastPathNode () {
+        return nodes.get(lastNodeIndex - 1);
+    }
+
     public PathConnection connectNodes (PathNode startNode, PathNode endNode) {
         PathConnection pathConnection = new PathConnection(startNode, endNode);
         pathConnections.add(pathConnection);
+        pathNodeMap.get(startNode).add(pathConnection);
         return pathConnection;
     }
 
@@ -38,9 +60,7 @@ public class PathGraph  implements IndexedGraph<PathNode> {
         }
         for (PathNode startNode : startNodes) {
             for (PathNode endNode : endNodes) {
-                PathConnection pathConnection = new PathConnection(startNode, endNode);
-                pathConnections.add(pathConnection);
-                connectedNodes.add(pathConnection);
+                connectedNodes.add(connectNodes(startNode, endNode));
             }
         }
         return connectedNodes;
@@ -71,17 +91,17 @@ public class PathGraph  implements IndexedGraph<PathNode> {
     }
 
     @Override
-    public int getIndex(PathNode node) {
-        return 0;
+    public int getIndex (PathNode node) {
+        return node.getIndex();
     }
 
     @Override
-    public int getNodeCount() {
-        return nodes.size;
+    public int getNodeCount () {
+        return lastNodeIndex;
     }
 
     @Override
-    public Array<Connection<PathNode>> getConnections(PathNode fromNode) {
-        return null;
+    public Array<Connection<PathNode>> getConnections (PathNode fromNode) {
+        return pathNodeMap.get(fromNode);
     }
 }
