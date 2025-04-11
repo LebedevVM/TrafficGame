@@ -21,6 +21,9 @@ public class RoadGraph {
     }
 
     public void addRoadConnection (RoadConnection roadConnection) {
+        if (roadConnection == null) {
+            return;
+        }
         if (roadConnections.contains(roadConnection, false)) {
             return;
         }
@@ -31,6 +34,7 @@ public class RoadGraph {
             return;
         }
 
+        roadConnection.connectPathNodes();
         roadConnections.add(roadConnection);
         roadConnection.end.addRoadConnection(roadConnection);
         roadConnection.start.addRoadConnection(roadConnection);

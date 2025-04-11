@@ -23,9 +23,9 @@ public class RoadConstructor {
     private int roadLine = 2;
 
     private boolean bridgeTransition = false;
+    private boolean secondToZeroTransition = false;
 
     private RoadPiece lastRoadPiece;
-    private MapNode lastMapNode;
 
     public RoadConstructor(MapGraph mapGraph, RoadGraph roadGraph, PathGraph pathGraph, PerspectiveCamera cam) {
         this.mapGraph = mapGraph;
@@ -39,6 +39,11 @@ public class RoadConstructor {
 
         if (mapNode == null) {
             return;
+        }
+        if (lastRoadPiece != null) {
+            if (lastRoadPiece.getMapNodeTrio().equals(mapNode.getMapNodeTrio())) {
+                return;
+            }
         }
         if (mapNode.isOccupiedByObstacle()) {
             lastRoadPiece = null;
@@ -81,27 +86,55 @@ public class RoadConstructor {
 
         if (!mapNode.isOccupiedByRoad()) {
             RoadPiece roadPiece = new RoadPiece(pathGraph, mapNode, level, roadLine);
+
             roadGraph.addRoadPiece(mapNode, roadPiece);
 
             roadGraph.addRoadConnection(makeRoadConnection(lastRoadPiece, roadPiece));
-
-            lastRoadPiece = roadPiece;
-
         }
         else {
             RoadPiece roadPiece = roadGraph.getRoadPiece(mapNode);
 
             if (roadPiece != null) {
                 roadGraph.addRoadConnection(makeRoadConnection(lastRoadPiece, roadPiece));
-                lastRoadPiece = roadPiece;
             }
         }
-        lastMapNode = null;
     }
 
     private RoadConnection makeRoadConnection (RoadPiece start, RoadPiece end) {
+        lastRoadPiece = end;
         if (start.getLevel() != end.getLevel()) {
-            return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
+            if (start.getLevel() == 0) {
+                if (end.getLevel() == 1) {
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
+                }
+                if (end.getLevel() == 2) {
+                    roadGraph.destroyRoadPiece(end);
+                    RoadPiece roadPiece = new RoadPiece(pathGraph, end.getMapNodeTrio().getFirstMapNode(), 1, roadLine);
+                    roadGraph.addRoadPiece(end.getMapNodeTrio().getFirstMapNode(), roadPiece);
+                    lastRoadPiece = roadPiece;
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, roadPiece);
+                }
+            }
+            if (start.getLevel() == 2) {
+                if (end.getLevel() == 1) {
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
+                }
+                if (end.getLevel() == 0) {
+                    roadGraph.destroyRoadPiece(end);
+                    RoadPiece roadPiece = new RoadPiece(pathGraph, end.getMapNodeTrio().getFirstMapNode(), 1, roadLine);
+                    roadGraph.addRoadPiece(end.getMapNodeTrio().getFirstMapNode(), roadPiece);
+                    lastRoadPiece = roadPiece;
+                    return RoadFactory.makeFirstToSecondMonoRoadConnection(start, roadPiece);
+                }
+            }
+            if (start.getLevel() == 1) {
+                if (end.getLevel() == 0) {
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
+                }
+                if (end.getLevel() == 2) {
+                    return RoadFactory.makeFirstToSecondMonoRoadConnection(start, end);
+                }
+            }
         }
         if (level == 0) {
 //            if (bridgeTransition) {
@@ -116,6 +149,9 @@ public class RoadConstructor {
 //                return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
 //            }
             return RoadFactory.makeFirstMonoRoadConnection(start, end);
+        }
+        if (level == 2) {
+            return RoadFactory.makeSecondMonoRoadConnection(start, end);
         }
         return null;
     }

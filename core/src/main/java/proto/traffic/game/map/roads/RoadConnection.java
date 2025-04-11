@@ -20,6 +20,8 @@ public class RoadConnection {
     protected RoadPiece start;
     protected RoadPiece end;
 
+    private int degrees;
+
     protected Circle destructionCircle;
 
     private ModelInstance modelInstance;
@@ -43,13 +45,14 @@ public class RoadConnection {
 
         destructionCircle = new Circle(vector3.x, vector3.z, Constants.mapNodeDistance/4f);
 
+        degrees = Math.round(vector2.angleDeg());
+
         modelInstance = new ModelInstance(model);
         modelInstance.transform.setToTranslation(vector3);
-        modelInstance.transform.rotate(new Vector3(0, 1, 0), (90 - Math.round(vector2.angleDeg())));
+        modelInstance.transform.rotate(new Vector3(0, 1, 0), (270 - degrees));
+    }
 
-        System.out.println(Math.round(vector2.angleDeg()));
-
-        int degrees = Math.round(vector2.angleDeg());
+    public void connectPathNodes () {
         Array<PathNode> startPathNodes = start.getPathNodeBatch().getPathNodeByDegrees(degrees);
         Array<PathNode> endPathNodes = end.getPathNodeBatch().getPathNodeByDegrees(degrees);
         start.getPathGraph().connectNodes(startPathNodes, endPathNodes);

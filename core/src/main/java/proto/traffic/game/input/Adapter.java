@@ -18,7 +18,14 @@ public class Adapter extends InputAdapter {
             starter.setDestruction(true);
             return false;
         }
-        starter.changeLevel();
+        if (Input.Keys.UP == keycode) {
+            starter.increaseLevel();
+            return false;
+        }
+        if (Input.Keys.DOWN == keycode) {
+            starter.decreaseLevel();
+            return false;
+        }
 
         return false;
     }

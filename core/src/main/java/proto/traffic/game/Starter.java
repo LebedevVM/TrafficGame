@@ -81,22 +81,18 @@ public class Starter extends ApplicationAdapter {
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
-    boolean level = true;
     boolean destruction = false;
 
     public void setDestruction (boolean destruction) {
         this.destruction = destruction;
     }
 
-    public void changeLevel () {
-        if (level) {
-            roadConstructor.increaseLevel();
-        }
-        else {
-            roadConstructor.decreaseLevel();
-        }
+    public void increaseLevel () {
+        roadConstructor.increaseLevel();
+    }
 
-        level = !level;
+    public void decreaseLevel () {
+        roadConstructor.decreaseLevel();
     }
 
     public void mouseDragged (Vector2 position) {

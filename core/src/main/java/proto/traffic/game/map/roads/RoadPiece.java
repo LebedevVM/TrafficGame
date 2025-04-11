@@ -82,6 +82,10 @@ public class RoadPiece extends MapNodePiece {
         return pathGraph;
     }
 
+    public MapNodeTrio getMapNodeTrio() {
+        return mapNodeTrio;
+    }
+
     @Override
     public boolean equals (Object obj) {
         RoadPiece roadPiece = (RoadPiece) obj;

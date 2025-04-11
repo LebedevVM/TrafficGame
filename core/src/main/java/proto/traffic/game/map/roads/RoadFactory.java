@@ -23,4 +23,16 @@ public class RoadFactory {
         Model model = loader.loadModel(Gdx.files.internal("firstMonoRoadConnection.obj"));
         return new RoadConnection(start, end, model);
     }
+
+    public static RoadConnection makeFirstToSecondMonoRoadConnection (RoadPiece start, RoadPiece end) {
+        ModelLoader loader = new ObjLoader();
+        Model model = loader.loadModel(Gdx.files.internal("firstToSecondMonoRoadConnection.obj"));
+        return new RoadConnection(start, end, model);
+    }
+
+    public static RoadConnection makeSecondMonoRoadConnection (RoadPiece start, RoadPiece end) {
+        ModelLoader loader = new ObjLoader();
+        Model model = loader.loadModel(Gdx.files.internal("secondMonoRoadConnection.obj"));
+        return new RoadConnection(start, end, model);
+    }
 }

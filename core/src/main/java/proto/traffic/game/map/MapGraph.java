@@ -1,20 +1,15 @@
 package proto.traffic.game.map;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.constants.Constants;
 
-import java.util.HashMap;
-
 public class MapGraph {
     private Array<MapNode> zeroNodes = new Array<>();
     private Array<MapNode> firstNodes = new Array<>();
+    private Array<MapNode> secondNodes = new Array<>();
 
     private int mapNodeDistance = Constants.mapNodeDistance;
 
@@ -30,26 +25,19 @@ public class MapGraph {
             for (int j = 0; j < 10; j ++) {
                 MapNode zeroMapNode = new MapNode(new Vector3(startPos.x, 0, startPos.y + j * mapNodeDistance));
                 MapNode firstMapNode = new MapNode(new Vector3(startPos.x, Constants.bridgeHeight, startPos.y + j * mapNodeDistance));
+                MapNode secondMapNode = new MapNode(new Vector3(startPos.x, Constants.bridgeHeight*2, startPos.y + j * mapNodeDistance));
                 zeroNodes.add(zeroMapNode);
                 firstNodes.add(firstMapNode);
+                secondNodes.add(secondMapNode);
 
-                MapNodeTrio mapNodeTrio = new MapNodeTrio(zeroMapNode, firstMapNode);
+                MapNodeTrio mapNodeTrio = new MapNodeTrio(zeroMapNode, firstMapNode, secondMapNode);
 
                 zeroMapNode.setMapNodeTrio(mapNodeTrio);
                 firstMapNode.setMapNodeTrio(mapNodeTrio);
+                secondMapNode.setMapNodeTrio(mapNodeTrio);
             }
             startPos.add(addingVector);
             addingVector.setAngleDeg(-addingVector.angleDeg());
-        }
-
-//        addingVector.setAngleDeg(30);
-    }
-
-    public void click (Vector2 vector2) {
-        for (MapNode zeroNode : zeroNodes) {
-            if (zeroNode.clicked(vector2)) {
-                System.out.println(zeroNodes.indexOf(zeroNode, true));
-            }
         }
     }
 
@@ -59,6 +47,9 @@ public class MapGraph {
         }
         if (level == 1) {
             return checkFirstNodes(vector2);
+        }
+        if (level == 2) {
+            return checkSecondNodes(vector2);
         }
 
         return null;
@@ -84,6 +75,16 @@ public class MapGraph {
         return null;
     }
 
+    private MapNode checkSecondNodes (Vector2 vector2) {
+        for (MapNode secondNode : secondNodes) {
+            if (secondNode.clicked(vector2)) {
+                return secondNode;
+            }
+        }
+
+        return null;
+    }
+
     public void show (ModelBatch batch, Environment environment) {
         for (MapNode zeroNode : zeroNodes) {
             zeroNode.show(batch, environment);
@@ -91,7 +92,8 @@ public class MapGraph {
         for (MapNode firstNode : firstNodes) {
             firstNode.show(batch, environment);
         }
-
-//        batch.render(modelInstance, environment);
+        for (MapNode secondNode : secondNodes) {
+            secondNode.show(batch, environment);
+        }
     }
 }
