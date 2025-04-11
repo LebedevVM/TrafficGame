@@ -17,11 +17,11 @@ import proto.traffic.game.map.path.PathNode;
 
 public class Car {
     private Queue<PathNode> pathQueue = new Queue<>();
-    private PathGraph pathGraph;
+    private final PathGraph pathGraph;
 
-    private Vector3 position;
-    private Vector3 displacement = new Vector3();
-    private Vector3 direction = new Vector3();
+    private final Vector3 position;
+    private final Vector3 displacement = new Vector3();
+    private final Vector3 direction = new Vector3();
 
     private float speed = Constants.maxCarSpeed;
     private float currentSpeed = 0;
