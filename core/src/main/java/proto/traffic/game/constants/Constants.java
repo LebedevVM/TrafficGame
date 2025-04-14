@@ -7,4 +7,5 @@ public abstract class Constants {
     public static final int pathNodeDistance = 2;
     public static final int maxCarSpeed = 10;
     public static final float carSightRadius = 1f;
+    public static final float carCrossedSignificance = 3;
 }

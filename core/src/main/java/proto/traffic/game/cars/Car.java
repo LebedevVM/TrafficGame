@@ -102,6 +102,7 @@ public class Car {
     public void checkNextNode () {
         if (pathQueue.size > 0) {
             PathNode nextNode = pathQueue.first();
+            nextNode.carCrossed();
             Vector3 nextPos = nextNode.getPosition();
             if (Vector3.dst(position.x, position.y, position.z, nextPos.x, nextPos.y, nextPos.z) < 1) {
                 pathQueue.removeFirst();
