@@ -2,21 +2,33 @@ package proto.traffic.game.cars;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.math.collision.Sphere;
 import com.badlogic.gdx.utils.Array;
+import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.path.PathGraph;
+import proto.traffic.game.map.path.PathNode;
 
 public class CarController {
-    private Array<Car> cars = new Array<>();
+    private final Array<Car> cars = new Array<>();
 
-    private PathGraph pathGraph;
+    private final PathGraph pathGraph;
 
-    public CarController(PathGraph pathGraph) {
+    public CarController (PathGraph pathGraph) {
         this.pathGraph = pathGraph;
     }
 
     public void addCar () {
         Car car = new Car(this, pathGraph, pathGraph.getFirstPathNode(), pathGraph.getLastPathNode());
         cars.add(car);
+    }
+
+    public void addCar (PathNode start, PathNode end) {
+        Car car = new Car(this, pathGraph, start, end);
+        cars.add(car);
+    }
+
+    public boolean isRouteAccessible (PathNode start, PathNode end) {
+        return pathGraph.findPath(start, end).getCount() > 0;
     }
 
     public void render (float delta) {
@@ -41,5 +53,20 @@ public class CarController {
             }
         }
         return false;
+    }
+
+    public boolean checkCollision (PathNode pathNode) {
+        Sphere sphere = new Sphere(pathNode.getPosition(), Constants.carSightRadius);
+        for (int i = 0; i < cars.size; i ++) {
+            Car car = cars.get(i);
+            if (car.checkCollision(sphere)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public PathGraph getPathGraph () {
+        return pathGraph;
     }
 }

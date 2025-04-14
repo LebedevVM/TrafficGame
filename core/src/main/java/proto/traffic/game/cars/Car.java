@@ -126,4 +126,8 @@ public class Car {
         return car.sightSphere.overlaps(centerSphere) && car != this;
 //        orientedBoundingBox.
     }
+
+    public boolean checkCollision (Sphere sphere) {
+        return sphere.overlaps(centerSphere);
+    }
 }

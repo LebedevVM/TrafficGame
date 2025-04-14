@@ -14,7 +14,9 @@ public class RoadDestructor {
         RoadConnection roadConnection = roadGraph.getRoadConnectionByClick(RoadConstructor.getPositionOnPlane(vector2));
 
         if (roadPiece != null) {
-            roadGraph.destroyRoadPiece(roadPiece);
+            if (roadPiece.isDestructible()) {
+                roadGraph.destroyRoadPiece(roadPiece);
+            }
             return;
         }
         if (roadConnection != null) {

@@ -18,9 +18,9 @@ public class PathGraph  implements IndexedGraph<PathNode> {
 
     private int lastNodeIndex = 0;
 
-    public GraphPath<PathNode> findPath (PathNode startCity, PathNode goalCity) {
+    public GraphPath<PathNode> findPath (PathNode startNode, PathNode goalNode) {
         GraphPath<PathNode> path = new DefaultGraphPath<>();
-        new IndexedAStarPathFinder<>(this).searchNodePath(startCity, goalCity, pathHeuristic, path);
+        new IndexedAStarPathFinder<>(this).searchNodePath(startNode, goalNode, pathHeuristic, path);
         return path;
     }
 

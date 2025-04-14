@@ -86,6 +86,10 @@ public class RoadPiece extends MapNodePiece {
         return mapNodeTrio;
     }
 
+    public boolean isDestructible () {
+        return true;
+    }
+
     @Override
     public boolean equals (Object obj) {
         RoadPiece roadPiece = (RoadPiece) obj;
