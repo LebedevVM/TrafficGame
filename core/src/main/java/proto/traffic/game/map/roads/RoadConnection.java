@@ -33,13 +33,6 @@ public class RoadConnection {
         this.start = start;
         this.end = end;
 
-//        ModelBuilder modelBuilder = new ModelBuilder();
-//        Model model = modelBuilder.createArrow(start.getPosition(), end.getPosition(), new Material(ColorAttribute.createDiffuse(Color.WHITE)),
-//            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-//
-//        modelInstance = new ModelInstance(model);
-//        modelInstance.transform.setToTranslation(end.getPosition());
-
         Vector2 vector2 = new Vector2(start.getPosition().x - end.getPosition().x, start.getPosition().z - end.getPosition().z);
 
         Vector3 vector3 = new Vector3((start.getPosition().x + end.getPosition().x)/2,
@@ -58,6 +51,9 @@ public class RoadConnection {
     public void connectPathNodes () {
         Array<PathNode> startPathNodes = start.getPathNodeBatch().getPathNodeByDegrees(degrees);
         Array<PathNode> endPathNodes = end.getPathNodeBatch().getPathNodeByDegrees(degrees);
+        if (startPathNodes == null || endPathNodes == null) {
+            return;
+        }
         for (PathConnection pathConnection : start.getPathGraph().connectNodes(startPathNodes, endPathNodes)) {
             pathConnections.add(pathConnection);
         }
@@ -78,7 +74,6 @@ public class RoadConnection {
     @Override
     public boolean equals (Object obj) {
         RoadConnection roadConnection = (RoadConnection) obj;
-//        return (start == roadConnection.start && end == roadConnection.end) || (start == roadConnection.end && end == roadConnection.start);
         return (start.equals(roadConnection.start) && end.equals(roadConnection.end)) || (start.equals(roadConnection.end) && end.equals(roadConnection.start));
     }
 }

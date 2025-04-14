@@ -15,7 +15,7 @@ public class CarController {
     }
 
     public void addCar () {
-        Car car = new Car(pathGraph, pathGraph.getFirstPathNode(), pathGraph.getLastPathNode());
+        Car car = new Car(this, pathGraph, pathGraph.getFirstPathNode(), pathGraph.getLastPathNode());
         cars.add(car);
     }
 
@@ -29,5 +29,17 @@ public class CarController {
         for (Car car : cars) {
             car.show(batch, environment);
         }
+    }
+
+    public boolean checkCollision (Car car) {
+        for (int i = 0; i < cars.size; i ++) {
+            Car car1 = cars.get(i);
+            if (car1.checkCollision(car)) {
+                if (car1 != car) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

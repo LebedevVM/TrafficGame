@@ -28,7 +28,7 @@ public class MapNode {
     public MapNode(Vector3 position) {
         this.position = position;
         circle = new Circle(position.x, position.z, Constants.mapNodeDistance/2f);
-        rangeCircle = new Circle(position.x, position.z, Constants.mapNodeDistance);
+        rangeCircle = new Circle(position.x, position.z, Constants.mapNodeDistance/1.5f);
 
         modelBuilder = new ModelBuilder();
         model = modelBuilder.createSphere(1, 1, 1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.YELLOW)),
