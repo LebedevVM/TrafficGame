@@ -20,7 +20,7 @@ public class RoadConstructor {
     private PathGraph pathGraph;
 
     private static int level = 0;
-    private int roadLine = 3;
+    private int roadLine = 1;
 
     private boolean bridgeTransition = false;
     private boolean secondToZeroTransition = false;

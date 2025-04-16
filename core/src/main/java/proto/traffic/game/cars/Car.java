@@ -74,7 +74,7 @@ public class Car {
             currentSpeed += acceleration * delta;
         }
         if (currentSpeed > speed) {
-            currentSpeed -= acceleration*3 * delta;
+            currentSpeed -= acceleration*20 * delta;
         }
         if (carManager.checkCollision(this)) {
             speed = 0;
@@ -118,6 +118,9 @@ public class Car {
             direction.sub(position);
             xyDegrees = (float) (Math.atan(direction.y / Math.sqrt(direction.x*direction.x + direction.z*direction.z)) * MathUtils.radiansToDegrees);
             xzDegrees = - (float) Math.atan2(direction.z, direction.x) * MathUtils.radiansToDegrees;
+            Vector3 sightDirection = new Vector3(direction);
+            sightDirection.setLength(Constants.carSightRadius*2);
+            sightSphere.center.set(position).add(sightDirection);
         }
     }
 
