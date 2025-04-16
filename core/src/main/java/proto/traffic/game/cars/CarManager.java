@@ -4,16 +4,15 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.collision.Sphere;
 import com.badlogic.gdx.utils.Array;
-import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.path.PathNode;
 
-public class CarController {
+public class CarManager {
     private final Array<Car> cars = new Array<>();
 
     private final PathGraph pathGraph;
 
-    public CarController (PathGraph pathGraph) {
+    public CarManager(PathGraph pathGraph) {
         this.pathGraph = pathGraph;
     }
 
@@ -55,8 +54,7 @@ public class CarController {
         return false;
     }
 
-    public boolean checkCollision (PathNode pathNode) {
-        Sphere sphere = new Sphere(pathNode.getPosition(), Constants.carSightRadius);
+    public boolean checkCollision (Sphere sphere) {
         for (int i = 0; i < cars.size; i ++) {
             Car car = cars.get(i);
             if (car.checkCollision(sphere)) {

@@ -69,13 +69,13 @@ public class PathGraph  implements IndexedGraph<PathNode> {
     public void destroyNodeConnection (Array<PathConnection> pathConnectionsToDestroy) {
         for (PathConnection pathConnectionToDestroy : pathConnectionsToDestroy) {
             pathConnections.removeValue(pathConnectionToDestroy, true);
+            pathNodeMap.get(pathConnectionToDestroy.getFromNode()).removeValue(pathConnectionToDestroy, true);
         }
     }
 
     public void destroyNode (Array<PathNode> pathNodes) {
         for (PathNode pathNode : pathNodes) {
-            nodes.removeValue(pathNode, true);
-            pathNodeMap.remove(pathNode);
+            destroyNode(pathNode);
         }
     }
 

@@ -25,7 +25,7 @@ public class Car {
     private float currentSpeed = 0;
     private float acceleration = 1;
 
-    private CarController carController;
+    private CarManager carManager;
 
     private PathNode goalNode;
     private PathNode currentNode;
@@ -38,12 +38,12 @@ public class Car {
     private float xyDegrees;
     private float xzDegrees;
 
-    public Car (CarController carController, PathGraph pathGraph, PathNode currentNode, PathNode goalNode) {
+    public Car (CarManager carManager, PathGraph pathGraph, PathNode currentNode, PathNode goalNode) {
         this.pathGraph = pathGraph;
         this.goalNode = goalNode;
         this.currentNode = currentNode;
         this.position = new Vector3(currentNode.getPosition());
-        this.carController = carController;
+        this.carManager = carManager;
         sightSphere = new Sphere(position, Constants.carSightRadius);
         centerSphere = new Sphere(position, Constants.carSightRadius);
 
@@ -76,7 +76,7 @@ public class Car {
         if (currentSpeed > speed) {
             currentSpeed -= acceleration*3 * delta;
         }
-        if (carController.checkCollision(this)) {
+        if (carManager.checkCollision(this)) {
             speed = 0;
         }
         else {

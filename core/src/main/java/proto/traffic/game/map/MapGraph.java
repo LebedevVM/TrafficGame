@@ -41,6 +41,10 @@ public class MapGraph {
         }
     }
 
+    public MapNode getRandomMapNode () {
+        return zeroNodes.random();
+    }
+
     public MapNode mouseClick (Vector2 vector2, int level) {
         if (level == 0) {
             return checkZeroNodes(vector2);

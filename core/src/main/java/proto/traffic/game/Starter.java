@@ -8,16 +8,18 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import proto.traffic.game.cars.CarController;
+import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.input.Adapter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.roads.RoadConstructor;
 import proto.traffic.game.map.roads.RoadDestructor;
 import proto.traffic.game.map.roads.RoadGraph;
+import proto.traffic.game.map.structures.BuildingManager;
+import proto.traffic.game.map.structures.nodes.ExportNode;
+import proto.traffic.game.map.structures.nodes.ImportNode;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Starter extends ApplicationAdapter {
@@ -37,7 +39,8 @@ public class Starter extends ApplicationAdapter {
     MapGraph mapGraph;
     private RoadGraph roadGraph = new RoadGraph();
     private PathGraph pathGraph = new PathGraph();
-    private CarController carController;
+    private CarManager carManager;
+    private BuildingManager buildingManager;
 
     @Override
     public void create() {
@@ -56,9 +59,18 @@ public class Starter extends ApplicationAdapter {
         cam.far = 300f;
         cam.update();
 
-        carController = new CarController(pathGraph);
+        carManager = new CarManager(pathGraph);
         roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
         roadDestructor = new RoadDestructor(roadGraph);
+        buildingManager = new BuildingManager(carManager);
+        ExportNode exportNode = new ExportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
+        ExportNode exportNode1 = new ExportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
+        ImportNode importNode = new ImportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
+        ImportNode importNode1 = new ImportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
+        buildingManager.addExportNode(exportNode);
+        buildingManager.addExportNode(exportNode1);
+        buildingManager.addImportNode(importNode);
+        buildingManager.addImportNode(importNode1);
 
         camController = new CameraInputController(cam);
 
@@ -103,7 +115,7 @@ public class Starter extends ApplicationAdapter {
     }
 
     public void addCar () {
-        carController.addCar();
+        carManager.addCar();
     }
 
     @Override
@@ -113,7 +125,9 @@ public class Starter extends ApplicationAdapter {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        carController.render(Gdx.graphics.getDeltaTime());
+        buildingManager.render();
+
+        carManager.render(Gdx.graphics.getDeltaTime());
 
         modelBatch.begin(cam);
 //        modelBatch.render(instance, environment);
@@ -122,7 +136,7 @@ public class Starter extends ApplicationAdapter {
             modelBatch.render(modelInstance, environment);
         }
         roadGraph.show(modelBatch, environment);
-        carController.show(modelBatch, environment);
+        carManager.show(modelBatch, environment);
 
         mapGraph.show(modelBatch, environment);
         pathGraph.show(modelBatch, environment);
