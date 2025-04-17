@@ -5,7 +5,6 @@ import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
-import proto.traffic.game.map.structures.buildings.Building;
 import proto.traffic.game.map.structures.buildings.ProcessingBuilding;
 
 public class ImportNode extends ParkingNode {
@@ -15,9 +14,9 @@ public class ImportNode extends ParkingNode {
 
     private ProcessingBuilding processingBuilding;
 
-    public ImportNode (BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ProcessingBuilding building) {
-        super(buildingManager, roadGraph, carManager, mapNode, building);
-        this.processingBuilding = building;
+    public ImportNode (BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ProcessingBuilding processingBuilding) {
+        super(buildingManager, roadGraph, carManager, mapNode);
+        this.processingBuilding = processingBuilding;
 
         importNumIncrementTask = new Timer.Task() {
             @Override
@@ -33,11 +32,11 @@ public class ImportNode extends ParkingNode {
         needsNum -= 1;
     }
 
-    public int getNeedsNum() {
+    public int getNeedsNum () {
         return needsNum;
     }
 
-    public void journeyEnded () {
-
+    public void carReached () {
+        processingBuilding.carReached();
     }
 }

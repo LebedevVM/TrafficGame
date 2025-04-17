@@ -46,6 +46,9 @@ public class BuildingManager {
         for (ExportNode exportNode : exportNodes) {
             exportNode.spawnCar();
         }
+        for (ReturnFromNode returnFromNode : returnFromNodes) {
+            returnFromNode.spawnCar();
+        }
     }
 
     public void addExportNode (ExportNode exportNode) {
@@ -62,5 +65,9 @@ public class BuildingManager {
 
     public void  addReturnFromNode (ReturnFromNode returnFromNode) {
         returnFromNodes.add(returnFromNode);
+    }
+
+    public CarManager getCarManager() {
+        return carManager;
     }
 }

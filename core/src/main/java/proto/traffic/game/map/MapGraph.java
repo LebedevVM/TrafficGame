@@ -45,6 +45,23 @@ public class MapGraph {
         return zeroNodes.random();
     }
 
+    public Array<MapNode> getMapNodesForBuilding () {
+        Array<MapNode> mapNodesForBuilding = new Array<>();
+
+        MapNode mapNode = getRandomMapNode();
+
+        mapNodesForBuilding.add(mapNode);
+
+        for (MapNode zeroNode : zeroNodes) {
+            if (zeroNode.isInRange(mapNode) && !zeroNode.isOccupiedByRoad()) {
+                mapNodesForBuilding.add(zeroNode);
+                break;
+            }
+        }
+
+        return mapNodesForBuilding;
+    }
+
     public MapNode mouseClick (Vector2 vector2, int level) {
         if (level == 0) {
             return checkZeroNodes(vector2);

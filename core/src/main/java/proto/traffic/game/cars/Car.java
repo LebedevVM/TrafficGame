@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Queue;
 import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.path.PathNode;
+import proto.traffic.game.map.structures.nodes.ImportNode;
 
 public class Car {
     private Queue<PathNode> pathQueue = new Queue<>();
@@ -30,6 +31,8 @@ public class Car {
     private PathNode goalNode;
     private PathNode currentNode;
 
+    private ImportNode importNode;
+
     private ModelInstance instance;
 
     private Sphere sightSphere;
@@ -38,12 +41,13 @@ public class Car {
     private float xyDegrees;
     private float xzDegrees;
 
-    public Car (CarManager carManager, PathGraph pathGraph, PathNode currentNode, PathNode goalNode) {
+    public Car (CarManager carManager, PathGraph pathGraph, PathNode currentNode, PathNode goalNode, ImportNode importNode) {
         this.pathGraph = pathGraph;
         this.goalNode = goalNode;
         this.currentNode = currentNode;
         this.position = new Vector3(currentNode.getPosition());
         this.carManager = carManager;
+        this.importNode = importNode;
         sightSphere = new Sphere(position, Constants.carSightRadius);
         centerSphere = new Sphere(position, Constants.carSightRadius);
 
@@ -121,6 +125,11 @@ public class Car {
             Vector3 sightDirection = new Vector3(direction);
             sightDirection.setLength(Constants.carSightRadius*2);
             sightSphere.center.set(position).add(sightDirection);
+        }
+        else {
+            if (importNode != null) {
+                importNode.carReached();
+            }
         }
     }
 

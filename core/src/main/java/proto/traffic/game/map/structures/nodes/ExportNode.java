@@ -5,15 +5,19 @@ import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
-import proto.traffic.game.map.structures.buildings.Building;
+import proto.traffic.game.map.structures.buildings.ExtractionBuilding;
 
 public class ExportNode extends ParkingNode {
     private int exportNum = 0;
-    private float exportFrequency = 10;
+    private float exportFrequency = 5;
     private Timer.Task exportNumIncrementTask;
 
-    public ExportNode (BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, Building building) {
-        super(buildingManager, roadGraph, carManager, mapNode, building);
+    private ExtractionBuilding extractionBuilding;
+
+    public ExportNode (BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ExtractionBuilding extractionBuilding) {
+        super(buildingManager, roadGraph, carManager, mapNode);
+        this.extractionBuilding = extractionBuilding;
+
         exportNumIncrementTask = new Timer.Task() {
             @Override
             public void run() {
@@ -37,8 +41,8 @@ public class ExportNode extends ParkingNode {
             return;
         }
 
-        carManager.addCar(pathNode, importNode.getPathNode());
-        building.carSpawned();
+        carManager.addCar(pathNode, importNode.getPathNode(), importNode);
+        extractionBuilding.carSpawned();
         exportNum -= 1;
         importNode.decreaseNeedsNum();
     }

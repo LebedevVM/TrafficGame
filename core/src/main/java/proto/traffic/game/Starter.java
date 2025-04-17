@@ -13,11 +13,14 @@ import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.input.Adapter;
 import proto.traffic.game.map.MapGraph;
+import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.roads.RoadConstructor;
 import proto.traffic.game.map.roads.RoadDestructor;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
+import proto.traffic.game.map.structures.buildings.ExtractionBuilding;
+import proto.traffic.game.map.structures.buildings.ProcessingBuilding;
 import proto.traffic.game.map.structures.nodes.ExportNode;
 import proto.traffic.game.map.structures.nodes.ImportNode;
 
@@ -63,16 +66,14 @@ public class Starter extends ApplicationAdapter {
         roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
         roadDestructor = new RoadDestructor(roadGraph);
         buildingManager = new BuildingManager(carManager);
-        ExportNode exportNode = new ExportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
-        ExportNode exportNode1 = new ExportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
-        ImportNode importNode = new ImportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
-        ImportNode importNode1 = new ImportNode(buildingManager, roadGraph, carManager, mapGraph.getRandomMapNode());
-        buildingManager.addExportNode(exportNode);
-        buildingManager.addExportNode(exportNode1);
-        buildingManager.addImportNode(importNode);
-        buildingManager.addImportNode(importNode1);
-
         camController = new CameraInputController(cam);
+
+        Array<MapNode> mapNodesForBuilding = mapGraph.getMapNodesForBuilding();
+        ExtractionBuilding extractionBuilding = new ExtractionBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
+        mapNodesForBuilding = mapGraph.getMapNodesForBuilding();
+        ProcessingBuilding processingBuilding = new ProcessingBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
+
+//        ProcessingBuilding processingBuilding = new ProcessingBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
 
         Adapter inputProcessor = new Adapter(this);
 

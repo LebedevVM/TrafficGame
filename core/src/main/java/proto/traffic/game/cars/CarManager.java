@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.collision.Sphere;
 import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.path.PathNode;
+import proto.traffic.game.map.structures.nodes.ImportNode;
 
 public class CarManager {
     private final Array<Car> cars = new Array<>();
@@ -17,12 +18,12 @@ public class CarManager {
     }
 
     public void addCar () {
-        Car car = new Car(this, pathGraph, pathGraph.getFirstPathNode(), pathGraph.getLastPathNode());
+        Car car = new Car(this, pathGraph, pathGraph.getFirstPathNode(), pathGraph.getLastPathNode(), null);
         cars.add(car);
     }
 
-    public void addCar (PathNode start, PathNode end) {
-        Car car = new Car(this, pathGraph, start, end);
+    public void addCar (PathNode start, PathNode end, ImportNode importNode) {
+        Car car = new Car(this, pathGraph, start, end, importNode);
         cars.add(car);
     }
 

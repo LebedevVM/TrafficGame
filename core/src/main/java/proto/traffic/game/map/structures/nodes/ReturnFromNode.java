@@ -4,13 +4,16 @@ import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
-import proto.traffic.game.map.structures.buildings.Building;
+import proto.traffic.game.map.structures.buildings.ProcessingBuilding;
 
 public class ReturnFromNode extends ParkingNode {
     private int carNum = 0;
 
-    public ReturnFromNode(BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, Building building) {
-        super(buildingManager, roadGraph, carManager, mapNode, building);
+    private ProcessingBuilding processingBuilding;
+
+    public ReturnFromNode(BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ProcessingBuilding processingBuilding) {
+        super(buildingManager, roadGraph, carManager, mapNode);
+        this.processingBuilding = processingBuilding;
     }
 
     public void spawnCar () {
@@ -26,9 +29,8 @@ public class ReturnFromNode extends ParkingNode {
             return;
         }
 
-        carManager.addCar(pathNode, returnToNode.getPathNode());
+        carManager.addCar(pathNode, returnToNode.getPathNode(), null);
         carNum -= 1;
-        building.carSpawned();
         returnToNode.decreaseNeedsNum();
     }
 
