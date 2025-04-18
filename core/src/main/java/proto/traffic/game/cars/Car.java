@@ -25,6 +25,7 @@ public class Car {
     private float speed = Constants.maxCarSpeed;
     private float currentSpeed = 0;
     private float acceleration = 1;
+    private float rotationSpeed = Constants.carRotationSpeed;
 
     private CarManager carManager;
 
@@ -38,6 +39,8 @@ public class Car {
     private Sphere sightSphere;
     private Sphere centerSphere;
 
+    private Float currentXYDegrees;
+    private Float currentXZDegrees;
     private float xyDegrees;
     private float xzDegrees;
 
@@ -86,6 +89,15 @@ public class Car {
         else {
             speed = Constants.maxCarSpeed;
         }
+        if (currentXYDegrees < xyDegrees) {
+            currentXYDegrees += rotationSpeed*delta;
+        }
+        if (currentXYDegrees > xyDegrees) {
+            currentXYDegrees -= rotationSpeed*delta;
+        }
+
+        changeXZDegrees(delta);
+
 
         displacement.set(direction).setLength(currentSpeed*delta);
         position.add(displacement);
@@ -93,12 +105,41 @@ public class Car {
         sightSphere.center.add(displacement);
     }
 
+    private void changeXZDegrees (float delta) {
+        if (currentXZDegrees < 0) {
+            currentXZDegrees = 360 + currentXZDegrees;
+        }
+        if (xzDegrees < 0) {
+            xzDegrees = 360 + xzDegrees;
+        }
+        if (xzDegrees > 360) {
+            xzDegrees = xzDegrees - 360;
+        }
+        if (currentXZDegrees > 360) {
+            currentXZDegrees = currentXZDegrees - 360;
+        }
+
+        float degreesDelta = xzDegrees - currentXZDegrees;
+        if (degreesDelta > 180) {
+            degreesDelta = 180 - degreesDelta;
+        }
+        if (degreesDelta < -180) {
+            degreesDelta = -180 - degreesDelta;
+        }
+        if (degreesDelta > 0) {
+            currentXZDegrees += rotationSpeed * delta;
+        }
+        if (degreesDelta < 0) {
+            currentXZDegrees -= rotationSpeed*delta;
+        }
+    }
+
     public void show (ModelBatch batch, Environment environment) {
         instance.transform.setToTranslation(position);
         instance.transform.scale(0.5f, 0.5f, 0.5f);
 
-        instance.transform.rotate(new Vector3(0,1,0), xzDegrees);
-        instance.transform.rotate(new Vector3(0,0,1), xyDegrees);
+        instance.transform.rotate(new Vector3(0,1,0), currentXZDegrees);
+        instance.transform.rotate(new Vector3(0,0,1), currentXYDegrees);
 
         batch.render(instance, environment);
     }
@@ -122,6 +163,12 @@ public class Car {
             direction.sub(position);
             xyDegrees = (float) (Math.atan(direction.y / Math.sqrt(direction.x*direction.x + direction.z*direction.z)) * MathUtils.radiansToDegrees);
             xzDegrees = - (float) Math.atan2(direction.z, direction.x) * MathUtils.radiansToDegrees;
+            if (currentXYDegrees == null) {
+                currentXYDegrees = xyDegrees;
+            }
+            if (currentXZDegrees == null) {
+                currentXZDegrees = xzDegrees;
+            }
             Vector3 sightDirection = new Vector3(direction);
             sightDirection.setLength(Constants.carSightRadius*2);
             sightSphere.center.set(position).add(sightDirection);

@@ -2,6 +2,7 @@ package proto.traffic.game.map.structures.nodes;
 
 import com.badlogic.gdx.utils.Timer;
 import proto.traffic.game.cars.CarManager;
+import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
@@ -9,7 +10,7 @@ import proto.traffic.game.map.structures.buildings.ProcessingBuilding;
 
 public class ImportNode extends ParkingNode {
     private int needsNum = 0;
-    private float importFrequency = 10;
+    private float importFrequency = Constants.importFrequency;
     private final Timer.Task importNumIncrementTask;
 
     private ProcessingBuilding processingBuilding;
