@@ -69,9 +69,9 @@ public class Starter extends ApplicationAdapter {
         camController = new CameraInputController(cam);
 
         Array<MapNode> mapNodesForBuilding = mapGraph.getMapNodesForBuilding();
-        ExtractionBuilding extractionBuilding = new ExtractionBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
+//        ExtractionBuilding extractionBuilding = new ExtractionBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
         mapNodesForBuilding = mapGraph.getMapNodesForBuilding();
-        ProcessingBuilding processingBuilding = new ProcessingBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
+//        ProcessingBuilding processingBuilding = new ProcessingBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
 
 //        ProcessingBuilding processingBuilding = new ProcessingBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
 

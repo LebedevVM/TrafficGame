@@ -21,11 +21,12 @@ public class Car {
     private final Vector3 position;
     private final Vector3 displacement = new Vector3();
     private final Vector3 direction = new Vector3();
+    private final Vector3 futureDirection = new Vector3();
 
     private float speed = Constants.maxCarSpeed;
     private float currentSpeed = 0;
-    private float acceleration = 1;
-    private float rotationSpeed = Constants.carRotationSpeed;
+    private final float acceleration = Constants.carAcceleration;
+    private final float rotationSpeed = Constants.carRotationSpeed;
 
     private CarManager carManager;
 
@@ -43,6 +44,8 @@ public class Car {
     private Float currentXZDegrees;
     private float xyDegrees;
     private float xzDegrees;
+    private float futureXZDegrees;
+    private float speedCoefficient = 1;
 
     public Car (CarManager carManager, PathGraph pathGraph, PathNode currentNode, PathNode goalNode, ImportNode importNode) {
         this.pathGraph = pathGraph;
@@ -87,7 +90,7 @@ public class Car {
             speed = 0;
         }
         else {
-            speed = Constants.maxCarSpeed;
+            speed = Constants.maxCarSpeed * speedCoefficient;
         }
         if (currentXYDegrees < xyDegrees) {
             currentXYDegrees += rotationSpeed*delta;
@@ -161,8 +164,18 @@ public class Car {
             PathNode nextNode = pathQueue.first();
             direction.set(nextNode.getPosition());
             direction.sub(position);
+            if (pathQueue.size > 1) {
+                PathNode futureNode = pathQueue.get(1);
+                futureDirection.set(futureNode.getPosition());
+                futureDirection.sub(nextNode.getPosition());
+            }
             xyDegrees = (float) (Math.atan(direction.y / Math.sqrt(direction.x*direction.x + direction.z*direction.z)) * MathUtils.radiansToDegrees);
             xzDegrees = - (float) Math.atan2(direction.z, direction.x) * MathUtils.radiansToDegrees;
+            futureXZDegrees = - (float) Math.atan2(futureDirection.z, futureDirection.x) * MathUtils.radiansToDegrees;
+
+            System.out.println(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
+            speedCoefficient = Constants.degreesToSpeedCoefficientMap.get(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
+
             if (currentXYDegrees == null) {
                 currentXYDegrees = xyDegrees;
             }
