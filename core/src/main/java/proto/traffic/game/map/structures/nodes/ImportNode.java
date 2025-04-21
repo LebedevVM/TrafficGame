@@ -6,7 +6,7 @@ import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
-import proto.traffic.game.map.structures.buildings.ProcessingBuilding;
+import proto.traffic.game.map.structures.buildings.processing.ProcessingBuilding;
 
 public class ImportNode extends ParkingNode {
     private int needsNum = 0;

@@ -57,12 +57,16 @@ public class MapNode {
         return position;
     }
 
-    public boolean isOccupiedByRoad() {
+    public boolean isOccupiedByRoad () {
         return isOccupiedByRoad;
     }
 
-    public boolean isOccupiedByObstacle() {
+    public boolean isOccupiedByObstacle () {
         return isOccupiedByObstacle;
+    }
+
+    public boolean isOccupied () {
+        return isOccupiedByObstacle || isOccupiedByRoad;
     }
 
     public void setOccupiedByObstacle(boolean occupiedByObstacle) {

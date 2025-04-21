@@ -6,7 +6,7 @@ import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
-import proto.traffic.game.map.structures.buildings.ExtractionBuilding;
+import proto.traffic.game.map.structures.buildings.extraction.ExtractionBuilding;
 
 public class ExportNode extends ParkingNode {
     private int exportNum = 0;
@@ -15,9 +15,12 @@ public class ExportNode extends ParkingNode {
 
     private ExtractionBuilding extractionBuilding;
 
-    public ExportNode (BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ExtractionBuilding extractionBuilding) {
+    private String buildingName;
+
+    public ExportNode (BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ExtractionBuilding extractionBuilding, String buildingName) {
         super(buildingManager, roadGraph, carManager, mapNode);
         this.extractionBuilding = extractionBuilding;
+        this.buildingName = buildingName;
 
         exportNumIncrementTask = new Timer.Task() {
             @Override
@@ -36,7 +39,7 @@ public class ExportNode extends ParkingNode {
         if (carManager.checkCollision(sphere)) {
             return;
         }
-        ImportNode importNode = buildingManager.getImportNode(pathNode);
+        ImportNode importNode = buildingManager.getImportNode(buildingName, pathNode);
 
         if (importNode == null) {
             return;

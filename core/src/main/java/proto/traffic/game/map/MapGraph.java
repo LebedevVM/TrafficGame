@@ -1,6 +1,7 @@
 package proto.traffic.game.map;
 
 import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -13,16 +14,26 @@ public class MapGraph {
 
     private int mapNodeDistance = Constants.mapNodeDistance;
 
-    private ModelInstance modelInstance;
+    private float width = 100;
+    private float height = width/6f*4f;
 
     public MapGraph () {
-        Vector2 startPos = new Vector2(-25, -25);
+        Vector2 startPos = new Vector2(-width/2, -height/2);
         Vector2 addingVector = new Vector2(mapNodeDistance, 0);
         addingVector.setAngleDeg(30);
 //        addingVector.setAngleDeg(0);
 
-        for (int i = 0; i < 10; i ++) {
-            for (int j = 0; j < 10; j ++) {
+        float x = startPos.x;
+        float y = startPos.y;
+        float len = height/4;
+        float doubleLen = len*2;
+        Rectangle firstRedExtractionRectangle = new Rectangle(x, y + len*2, doubleLen, doubleLen);
+        Rectangle secondRedExtractionRectangle = new Rectangle(x + len*4, y, doubleLen, doubleLen);
+        Rectangle firstRedProcessingRectangle = new Rectangle(x + len, y, doubleLen, doubleLen);
+        Rectangle secondRedProcessingRectangle = new Rectangle(x + len*3, y + len*2, doubleLen, doubleLen);
+
+        for (int i = 0; i < width/(mapNodeDistance*Math.sqrt(3)/2); i ++) {
+            for (int j = 0; j < height/mapNodeDistance; j ++) {
                 MapNode zeroMapNode = new MapNode(new Vector3(startPos.x, 0, startPos.y + j * mapNodeDistance));
                 MapNode firstMapNode = new MapNode(new Vector3(startPos.x, Constants.bridgeHeight, startPos.y + j * mapNodeDistance));
                 MapNode secondMapNode = new MapNode(new Vector3(startPos.x, Constants.bridgeHeight*2, startPos.y + j * mapNodeDistance));
@@ -41,6 +52,19 @@ public class MapGraph {
         }
     }
 
+    public Array<MapNode> getMapNodesInRectangle (Rectangle rectangle) {
+        Array<MapNode> mapNodesInRectangle = new Array<>();
+
+        for (MapNode zeroNode : zeroNodes) {
+            Vector3 pos = zeroNode.getPosition();
+            if (rectangle.contains(new Vector2(pos.x, pos.z))) {
+                mapNodesInRectangle.add(zeroNode);
+            }
+        }
+
+        return mapNodesInRectangle;
+    }
+
     public MapNode getRandomMapNode () {
         return zeroNodes.random();
     }
@@ -50,12 +74,25 @@ public class MapGraph {
 
         MapNode mapNode = getRandomMapNode();
 
+        for (int i = 0; i < 10; i ++) {
+            if (!mapNode.isOccupied()) {
+                break;
+            }
+            mapNode = getRandomMapNode();
+        }
+
+        if (mapNode.isOccupied()) {
+            return mapNodesForBuilding;
+        }
+
         mapNodesForBuilding.add(mapNode);
 
         for (MapNode zeroNode : zeroNodes) {
-            if (zeroNode.isInRange(mapNode) && !zeroNode.isOccupiedByRoad()) {
+            if (zeroNode.isInRange(mapNode) && !zeroNode.isOccupied()) {
                 mapNodesForBuilding.add(zeroNode);
-                break;
+                if (mapNodesForBuilding.size == 3) {
+                    break;
+                }
             }
         }
 
@@ -116,5 +153,13 @@ public class MapGraph {
         for (MapNode secondNode : secondNodes) {
             secondNode.show(batch, environment);
         }
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }

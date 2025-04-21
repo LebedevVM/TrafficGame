@@ -14,6 +14,7 @@ public abstract class Constants {
     public static final float carCrossedSignificance = 3;
     public static final float exportFrequency = 10;
     public static final float importFrequency = 10;
+    public static final float buildingFrequency = 10;
     public static final ObjectMap<Integer, Float> degreesToSpeedCoefficientMap = new ObjectMap<>();
     static {
         degreesToSpeedCoefficientMap.put(0, 1f);

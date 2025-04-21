@@ -19,10 +19,6 @@ import proto.traffic.game.map.roads.RoadConstructor;
 import proto.traffic.game.map.roads.RoadDestructor;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
-import proto.traffic.game.map.structures.buildings.ExtractionBuilding;
-import proto.traffic.game.map.structures.buildings.ProcessingBuilding;
-import proto.traffic.game.map.structures.nodes.ExportNode;
-import proto.traffic.game.map.structures.nodes.ImportNode;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Starter extends ApplicationAdapter {
@@ -56,8 +52,8 @@ public class Starter extends ApplicationAdapter {
         modelBatch = new ModelBatch();
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(-40f, 50f, -12.5f);
-        cam.lookAt(-12.5f,0,-12.5f);
+        cam.position.set(-0f, 100f, -0f);
+        cam.lookAt(-0f,0,-0f);
         cam.near = 1f;
         cam.far = 300f;
         cam.update();
@@ -65,7 +61,7 @@ public class Starter extends ApplicationAdapter {
         carManager = new CarManager(pathGraph);
         roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
         roadDestructor = new RoadDestructor(roadGraph);
-        buildingManager = new BuildingManager(carManager);
+        buildingManager = new BuildingManager(carManager, roadGraph, mapGraph);
         camController = new CameraInputController(cam);
 
         Array<MapNode> mapNodesForBuilding = mapGraph.getMapNodesForBuilding();

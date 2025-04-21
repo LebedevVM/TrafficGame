@@ -4,16 +4,19 @@ import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
-import proto.traffic.game.map.structures.buildings.ProcessingBuilding;
+import proto.traffic.game.map.structures.buildings.processing.ProcessingBuilding;
 
 public class ReturnFromNode extends ParkingNode {
     private int carNum = 0;
 
     private ProcessingBuilding processingBuilding;
 
-    public ReturnFromNode(BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ProcessingBuilding processingBuilding) {
+    private final String buildingName;
+
+    public ReturnFromNode (BuildingManager buildingManager, RoadGraph roadGraph, CarManager carManager, MapNode mapNode, ProcessingBuilding processingBuilding, String buildingName) {
         super(buildingManager, roadGraph, carManager, mapNode);
         this.processingBuilding = processingBuilding;
+        this.buildingName = buildingName;
     }
 
     public void spawnCar () {
@@ -23,7 +26,7 @@ public class ReturnFromNode extends ParkingNode {
         if (carManager.checkCollision(sphere)) {
             return;
         }
-        ReturnToNode returnToNode = buildingManager.getReturnToNode(pathNode);
+        ReturnToNode returnToNode = buildingManager.getReturnToNode(buildingName, pathNode);
 
         if (returnToNode == null) {
             return;

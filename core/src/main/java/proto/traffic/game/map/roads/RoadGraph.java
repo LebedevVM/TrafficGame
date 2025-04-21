@@ -33,6 +33,9 @@ public class RoadGraph {
         if (roadConnection.end == roadConnection.start) {
             return;
         }
+        if (!roadConnection.start.isDestructible() && !roadConnection.end.isDestructible()) {
+            return;
+        }
 
         roadConnection.connectPathNodes();
         roadConnections.add(roadConnection);
