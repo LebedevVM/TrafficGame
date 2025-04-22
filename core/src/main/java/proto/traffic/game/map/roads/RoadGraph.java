@@ -1,7 +1,6 @@
 package proto.traffic.game.map.roads;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -27,20 +26,20 @@ public class RoadGraph {
         if (roadConnections.contains(roadConnection, false)) {
             return;
         }
-        if (!roadConnection.end.isInRange(roadConnection.start)) {
+        if (!roadConnection.getEnd().isInRange(roadConnection.getStart())) {
             return;
         }
-        if (roadConnection.end == roadConnection.start) {
+        if (roadConnection.getEnd() == roadConnection.getStart()) {
             return;
         }
-        if (!roadConnection.start.isDestructible() && !roadConnection.end.isDestructible()) {
+        if (!roadConnection.getStart().isDestructible() && !roadConnection.getEnd().isDestructible()) {
             return;
         }
 
         roadConnection.connectPathNodes();
         roadConnections.add(roadConnection);
-        roadConnection.end.addRoadConnection(roadConnection);
-        roadConnection.start.addRoadConnection(roadConnection);
+        roadConnection.getEnd().addRoadConnection(roadConnection);
+        roadConnection.getStart().addRoadConnection(roadConnection);
     }
 
     public RoadConnection getRoadConnectionByClick (Vector2 vector2) {
@@ -67,12 +66,19 @@ public class RoadGraph {
             destroyRoadConnection(roadConnection);
         }
         roadPiece.getPathNodeBatch().destroy();
+        roadPiece.destroy(this);
+    }
+
+    public void roadPieceDestroyed (RoadPiece roadPiece) {
         roadPieces.remove(roadPiece.getMapNode());
     }
 
     public void destroyRoadConnection (RoadConnection roadConnection) {
-        roadConnections.removeValue(roadConnection, true);
         roadConnection.destroyPathConnections();
+    }
+
+    public void roadConnectionDestroyed (RoadConnection roadConnection) {
+        roadConnections.removeValue(roadConnection, true);
     }
 
     public void show (ModelBatch batch, Environment environment) {

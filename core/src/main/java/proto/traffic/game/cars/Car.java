@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Sphere;
 import com.badlogic.gdx.utils.Queue;
+import com.badlogic.gdx.utils.Timer;
 import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.path.PathNode;
@@ -27,6 +28,8 @@ public class Car {
     private float currentSpeed = 0;
     private final float acceleration = Constants.carAcceleration;
     private final float rotationSpeed = Constants.carRotationSpeed;
+
+    private float scale = 0.5f;
 
     private CarManager carManager;
 
@@ -58,6 +61,7 @@ public class Car {
         centerSphere = new Sphere(position, Constants.carSightRadius);
 
         findPath();
+        reachNextNode();
 
         ModelLoader loader = new ObjLoader();
         Model model = loader.loadModel(Gdx.files.internal("car.obj"));
@@ -75,7 +79,6 @@ public class Car {
         for (int i = 1; i < graphPath.getCount(); i++) {
             pathQueue.addLast(graphPath.get(i));
         }
-        reachNextNode();
     }
 
     public void render (float delta) {
@@ -139,7 +142,7 @@ public class Car {
 
     public void show (ModelBatch batch, Environment environment) {
         instance.transform.setToTranslation(position);
-        instance.transform.scale(0.5f, 0.5f, 0.5f);
+        instance.transform.scale(scale, scale, scale);
 
         instance.transform.rotate(new Vector3(0,1,0), currentXZDegrees);
         instance.transform.rotate(new Vector3(0,0,1), currentXYDegrees);
@@ -153,7 +156,7 @@ public class Car {
             nextNode.carCrossed();
             Vector3 nextPos = nextNode.getPosition();
             if (Vector3.dst(position.x, position.y, position.z, nextPos.x, nextPos.y, nextPos.z) < 1) {
-                pathQueue.removeFirst();
+                currentNode = pathQueue.removeFirst();
                 reachNextNode();
             }
         }
@@ -161,6 +164,12 @@ public class Car {
 
     public void reachNextNode () {
         if (pathQueue.size != 0) {
+            findPath();
+            if (pathQueue.size == 0) {
+                disappear();
+                return;
+            }
+
             PathNode nextNode = pathQueue.first();
             direction.set(nextNode.getPosition());
             direction.sub(position);
@@ -173,7 +182,6 @@ public class Car {
             xzDegrees = - (float) Math.atan2(direction.z, direction.x) * MathUtils.radiansToDegrees;
             futureXZDegrees = - (float) Math.atan2(futureDirection.z, futureDirection.x) * MathUtils.radiansToDegrees;
 
-            System.out.println(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
             speedCoefficient = Constants.degreesToSpeedCoefficientMap.get(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
 
             if (currentXYDegrees == null) {
@@ -190,7 +198,26 @@ public class Car {
             if (importNode != null) {
                 importNode.carReached();
             }
+            disappear();
         }
+    }
+
+    public void disappear () {
+        currentSpeed = 0;
+        speed = 0;
+        Car car = this;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                scale -= 0.01f;
+            }
+        }, 0, 0.01f, 50);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                carManager.removeCar(car);
+            }
+        }, 1f);
     }
 
     public boolean checkCollision (Car car) {

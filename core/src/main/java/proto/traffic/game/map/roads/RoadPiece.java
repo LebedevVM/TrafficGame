@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import proto.traffic.game.constants.Constants;
-import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.MapNodePiece;
 import proto.traffic.game.map.MapNodeTrio;
@@ -18,19 +18,21 @@ import proto.traffic.game.map.path.batch.PathNodeBatch;
 import proto.traffic.game.map.path.batch.PathNodeBatchFactory;
 
 public class RoadPiece extends MapNodePiece {
-    private Model model;
-    private ModelInstance instance;
+    private final Model model;
+    private final ModelInstance instance;
 
-    private MapNodeTrio mapNodeTrio;
+    private final MapNodeTrio mapNodeTrio;
 
-    private Circle destructionCircle;
+    private final Circle destructionCircle;
 
-    private Array<RoadConnection> roadConnections = new Array<>();
+    private final Array<RoadConnection> roadConnections = new Array<>();
 
-    private PathNodeBatch pathNodeBatch;
-    private PathGraph pathGraph;
+    private final PathNodeBatch pathNodeBatch;
+    private final PathGraph pathGraph;
 
-    private int level;
+    private float scale = 1f;
+
+    private final int level;
 
     public RoadPiece (PathGraph pathGraph, MapNode mapNode, int level, int lines) {
         super(mapNode);
@@ -52,6 +54,26 @@ public class RoadPiece extends MapNodePiece {
 
     public void show (ModelBatch batch, Environment environment) {
         batch.render(instance, environment);
+    }
+
+    public void destroy (RoadGraph roadGraph) {
+        RoadPiece roadPiece = this;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                scale -= 0.02f;
+                if (scale < 0) {
+                    scale = 0;
+                }
+                instance.transform.scale(scale, scale, scale);
+            }
+        }, 0, 0.01f, 49);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                roadGraph.roadPieceDestroyed(roadPiece);
+            }
+        }, 1f);
     }
 
     public boolean isInRange (RoadPiece roadPiece) {

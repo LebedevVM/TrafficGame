@@ -20,7 +20,9 @@ public class PathGraph  implements IndexedGraph<PathNode> {
 
     public GraphPath<PathNode> findPath (PathNode startNode, PathNode goalNode) {
         GraphPath<PathNode> path = new DefaultGraphPath<>();
-        new IndexedAStarPathFinder<>(this).searchNodePath(startNode, goalNode, pathHeuristic, path);
+        if (nodes.contains(startNode, true) && nodes.contains(goalNode, true)) {
+            new IndexedAStarPathFinder<>(this).searchNodePath(startNode, goalNode, pathHeuristic, path);
+        }
         return path;
     }
 
@@ -69,7 +71,10 @@ public class PathGraph  implements IndexedGraph<PathNode> {
     public void destroyNodeConnection (Array<PathConnection> pathConnectionsToDestroy) {
         for (PathConnection pathConnectionToDestroy : pathConnectionsToDestroy) {
             pathConnections.removeValue(pathConnectionToDestroy, true);
-            pathNodeMap.get(pathConnectionToDestroy.getFromNode()).removeValue(pathConnectionToDestroy, true);
+            Array<Connection<PathNode>> array = pathNodeMap.get(pathConnectionToDestroy.getFromNode());
+            if (array != null) {
+                array.removeValue(pathConnectionToDestroy, true);
+            }
         }
     }
 

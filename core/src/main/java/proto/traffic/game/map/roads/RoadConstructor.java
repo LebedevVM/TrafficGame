@@ -15,15 +15,14 @@ import proto.traffic.game.map.path.PathGraph;
 public class RoadConstructor {
     public PerspectiveCamera cam;
 
-    private MapGraph mapGraph;
-    private RoadGraph roadGraph;
-    private PathGraph pathGraph;
+    private final MapGraph mapGraph;
+    private final RoadGraph roadGraph;
+    private final PathGraph pathGraph;
 
     private static int level = 0;
     private int roadLine = 1;
 
     private boolean bridgeTransition = false;
-    private boolean secondToZeroTransition = false;
 
     private RoadPiece lastRoadPiece;
 
@@ -105,74 +104,62 @@ public class RoadConstructor {
         if (start.getLevel() != end.getLevel()) {
             if (start.getLevel() == 0) {
                 if (end.getLevel() == 1) {
-                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(roadGraph, start, end);
                 }
                 if (end.getLevel() == 2) {
                     roadGraph.destroyRoadPiece(end);
                     RoadPiece roadPiece = new RoadPiece(pathGraph, end.getMapNodeTrio().getFirstMapNode(), 1, roadLine);
                     roadGraph.addRoadPiece(end.getMapNodeTrio().getFirstMapNode(), roadPiece);
                     lastRoadPiece = roadPiece;
-                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, roadPiece);
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(roadGraph, start, roadPiece);
                 }
             }
             if (start.getLevel() == 2) {
                 if (end.getLevel() == 1) {
-                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(roadGraph, start, end);
                 }
                 if (end.getLevel() == 0) {
                     roadGraph.destroyRoadPiece(end);
                     RoadPiece roadPiece = new RoadPiece(pathGraph, end.getMapNodeTrio().getFirstMapNode(), 1, roadLine);
                     roadGraph.addRoadPiece(end.getMapNodeTrio().getFirstMapNode(), roadPiece);
                     lastRoadPiece = roadPiece;
-                    return RoadFactory.makeFirstToSecondMonoRoadConnection(start, roadPiece);
+                    return RoadFactory.makeFirstToSecondMonoRoadConnection(roadGraph, start, roadPiece);
                 }
             }
             if (start.getLevel() == 1) {
                 if (end.getLevel() == 0) {
-                    return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
+                    return RoadFactory.makeZeroToFirstMonoRoadConnection(roadGraph, start, end);
                 }
                 if (end.getLevel() == 2) {
-                    return RoadFactory.makeFirstToSecondMonoRoadConnection(start, end);
+                    return RoadFactory.makeFirstToSecondMonoRoadConnection(roadGraph, start, end);
                 }
             }
         }
         if (level == 0) {
-//            if (bridgeTransition) {
-//                bridgeTransition = false;
-//
-//            }
-            return RoadFactory.makeZeroMonoRoadConnection(start, end);
+            return RoadFactory.makeZeroMonoRoadConnection(roadGraph, start, end);
         }
         if (level == 1) {
-//            if (bridgeTransition) {
-//                bridgeTransition = false;
-//                return RoadFactory.makeZeroToFirstMonoRoadConnection(start, end);
-//            }
-            return RoadFactory.makeFirstMonoRoadConnection(start, end);
+            return RoadFactory.makeFirstMonoRoadConnection(roadGraph, start, end);
         }
         if (level == 2) {
-            return RoadFactory.makeSecondMonoRoadConnection(start, end);
+            return RoadFactory.makeSecondMonoRoadConnection(roadGraph, start, end);
         }
         return null;
     }
 
     public void increaseLevel () {
         level += 1;
-
         if (level > 2) {
             level = 2;
         }
-
         bridgeTransition = true;
     }
 
     public void decreaseLevel () {
         level -= 1;
-
         if (level < 0) {
             level = 0;
         }
-
         bridgeTransition = true;
     }
 

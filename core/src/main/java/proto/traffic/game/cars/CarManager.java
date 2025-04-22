@@ -27,6 +27,10 @@ public class CarManager {
         cars.add(car);
     }
 
+    public void removeCar (Car car) {
+        cars.removeValue(car, true);
+    }
+
     public boolean isRouteAccessible (PathNode start, PathNode end) {
         return pathGraph.findPath(start, end).getCount() > 0;
     }
