@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.Array;
 import proto.traffic.game.constants.Constants;
 
 public class MapGraph {
-    private Array<MapNode> zeroNodes = new Array<>();
-    private Array<MapNode> firstNodes = new Array<>();
-    private Array<MapNode> secondNodes = new Array<>();
+    private final Array<MapNode> zeroNodes = new Array<>();
+    private final Array<MapNode> firstNodes = new Array<>();
+    private final Array<MapNode> secondNodes = new Array<>();
 
-    private int mapNodeDistance = Constants.mapNodeDistance;
+    private final int mapNodeDistance = Constants.mapNodeDistance;
 
     private float width = 100;
     private float height = width/6f*4f;
@@ -22,15 +22,6 @@ public class MapGraph {
         Vector2 addingVector = new Vector2(mapNodeDistance, 0);
         addingVector.setAngleDeg(30);
 //        addingVector.setAngleDeg(0);
-
-        float x = startPos.x;
-        float y = startPos.y;
-        float len = height/4;
-        float doubleLen = len*2;
-        Rectangle firstRedExtractionRectangle = new Rectangle(x, y + len*2, doubleLen, doubleLen);
-        Rectangle secondRedExtractionRectangle = new Rectangle(x + len*4, y, doubleLen, doubleLen);
-        Rectangle firstRedProcessingRectangle = new Rectangle(x + len, y, doubleLen, doubleLen);
-        Rectangle secondRedProcessingRectangle = new Rectangle(x + len*3, y + len*2, doubleLen, doubleLen);
 
         for (int i = 0; i < width/(mapNodeDistance*Math.sqrt(3)/2); i ++) {
             for (int j = 0; j < height/mapNodeDistance; j ++) {

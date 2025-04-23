@@ -1,6 +1,7 @@
 package proto.traffic.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.*;
@@ -14,137 +15,28 @@ import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.input.Adapter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
+import proto.traffic.game.map.obstacles.RiverGraph;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.roads.RoadConstructor;
 import proto.traffic.game.map.roads.RoadDestructor;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.BuildingManager;
+import proto.traffic.game.screens.GameScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Starter extends ApplicationAdapter {
-    public Environment environment;
-    public static PerspectiveCamera cam;
-    public CameraInputController camController;
-    public ModelBatch modelBatch;
-    public Model model;
-    public Model model1;
-    public ModelInstance instance;
-
-    public Array<ModelInstance> instances = new Array<>();
-
-    private RoadConstructor roadConstructor;
-    private RoadDestructor roadDestructor;
-
-    MapGraph mapGraph;
-    private RoadGraph roadGraph = new RoadGraph();
-    private PathGraph pathGraph = new PathGraph();
-    private CarManager carManager;
-    private BuildingManager buildingManager;
-
+public class Starter extends Game {
     @Override
     public void create() {
-        environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-
-        mapGraph = new MapGraph();
-
-        modelBatch = new ModelBatch();
-
-        cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(-0f, 100f, -0f);
-        cam.lookAt(-0f,0,-0f);
-        cam.near = 1f;
-        cam.far = 300f;
-        cam.update();
-
-        carManager = new CarManager(pathGraph);
-        roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
-        roadDestructor = new RoadDestructor(roadGraph);
-        buildingManager = new BuildingManager(carManager, roadGraph, mapGraph);
-        camController = new CameraInputController(cam);
-
-        Array<MapNode> mapNodesForBuilding = mapGraph.getMapNodesForBuilding();
-//        ExtractionBuilding extractionBuilding = new ExtractionBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
-        mapNodesForBuilding = mapGraph.getMapNodesForBuilding();
-//        ProcessingBuilding processingBuilding = new ProcessingBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
-
-//        ProcessingBuilding processingBuilding = new ProcessingBuilding(buildingManager, roadGraph, Color.CORAL, mapNodesForBuilding.get(0), mapNodesForBuilding.get(1));
-
-        Adapter inputProcessor = new Adapter(this);
-
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(inputProcessor);
-        inputMultiplexer.addProcessor(camController);
-
-        Gdx.input.setInputProcessor(inputMultiplexer);
-    }
-
-    boolean destruction = false;
-
-    public void setDestruction (boolean destruction) {
-        this.destruction = destruction;
-        roadConstructor.setLastRoadPieceAsNull();
-    }
-
-    public void increaseLevel () {
-        roadConstructor.increaseLevel();
-    }
-
-    public void decreaseLevel () {
-        roadConstructor.decreaseLevel();
-    }
-
-    public void mouseDragged (Vector2 position) {
-        if (destruction) {
-            roadDestructor.mouseDragged(position);
-            return;
-        }
-        roadConstructor.mouseDragged(position);
-    }
-
-    public void hitSomething (Vector2 screenCoords) {
-        if (destruction) {
-            roadDestructor.mouseTouchDown(screenCoords);
-            return;
-        }
-        roadConstructor.mouseTouchDown(screenCoords);
-    }
-
-    public void addCar () {
-        carManager.addCar();
+        this.setScreen(new GameScreen());
     }
 
     @Override
     public void render() {
-        camController.update();
-
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-        buildingManager.render();
-
-        carManager.render(Gdx.graphics.getDeltaTime());
-
-        modelBatch.begin(cam);
-//        modelBatch.render(instance, environment);
-
-        for (ModelInstance modelInstance : instances) {
-            modelBatch.render(modelInstance, environment);
-        }
-        roadGraph.show(modelBatch, environment);
-        carManager.show(modelBatch, environment);
-
-        mapGraph.show(modelBatch, environment);
-        pathGraph.show(modelBatch, environment);
-
-        modelBatch.end();
+        super.render();
     }
 
     @Override
     public void dispose() {
-        modelBatch.dispose();
-        model.dispose();
     }
 
     @Override

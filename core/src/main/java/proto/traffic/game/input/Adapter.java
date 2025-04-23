@@ -3,31 +3,31 @@ package proto.traffic.game.input;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
-import proto.traffic.game.Starter;
+import proto.traffic.game.screens.GameScreen;
 
 public class Adapter extends InputAdapter {
-    Starter starter;
+    GameScreen gameScreen;
 
-    public Adapter (Starter starter) {
-        this.starter = starter;
+    public Adapter (GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
     }
 
     @Override
     public boolean keyDown(int keycode) {
         if (Input.Keys.SPACE == keycode) {
-            starter.addCar();
+            gameScreen.addCar();
             return false;
         }
         if (Input.Keys.SHIFT_LEFT == keycode) {
-            starter.setDestruction(true);
+            gameScreen.setDestruction(true);
             return false;
         }
         if (Input.Keys.UP == keycode) {
-            starter.increaseLevel();
+            gameScreen.increaseLevel();
             return false;
         }
         if (Input.Keys.DOWN == keycode) {
-            starter.decreaseLevel();
+            gameScreen.decreaseLevel();
             return false;
         }
 
@@ -37,14 +37,14 @@ public class Adapter extends InputAdapter {
     @Override
     public boolean keyUp(int keycode) {
         if (Input.Keys.SHIFT_LEFT == keycode) {
-            starter.setDestruction(false);
+            gameScreen.setDestruction(false);
         }
         return super.keyUp(keycode);
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        starter.hitSomething(new Vector2(screenX, screenY));
+        gameScreen.click(new Vector2(screenX, screenY));
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
@@ -55,7 +55,7 @@ public class Adapter extends InputAdapter {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        starter.mouseDragged(new Vector2(screenX, screenY));
+        gameScreen.mouseDragged(new Vector2(screenX, screenY));
         return false;
     }
 

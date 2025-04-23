@@ -36,6 +36,7 @@ public class RoadPiece extends MapNodePiece {
 
     public RoadPiece (PathGraph pathGraph, MapNode mapNode, int level, int lines) {
         super(mapNode);
+        mapNode.setOccupiedByRoad(true);
 
         this.pathGraph = pathGraph;
         this.level = level;

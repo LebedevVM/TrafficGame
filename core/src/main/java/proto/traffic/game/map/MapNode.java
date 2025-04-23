@@ -25,7 +25,7 @@ public class MapNode {
 
     ModelBuilder modelBuilder;
 
-    public MapNode(Vector3 position) {
+    public MapNode (Vector3 position) {
         this.position = position;
         circle = new Circle(position.x, position.z, Constants.mapNodeDistance/2f);
         rangeCircle = new Circle(position.x, position.z, Constants.mapNodeDistance/1.5f);
@@ -53,7 +53,7 @@ public class MapNode {
         batch.render(instance, environment);
     }
 
-    public Vector3 getPosition() {
+    public Vector3 getPosition () {
         return position;
     }
 
@@ -69,24 +69,24 @@ public class MapNode {
         return isOccupiedByObstacle || isOccupiedByRoad;
     }
 
-    public void setOccupiedByObstacle(boolean occupiedByObstacle) {
+    public void setOccupiedByObstacle (boolean occupiedByObstacle) {
         isOccupiedByObstacle = occupiedByObstacle;
     }
 
-    public void setOccupiedByRoad(boolean occupiedByRoad) {
+    public void setOccupiedByRoad (boolean occupiedByRoad) {
         isOccupiedByRoad = occupiedByRoad;
     }
 
-    public MapNodeTrio getMapNodeTrio() {
+    public MapNodeTrio getMapNodeTrio () {
         return mapNodeTrio;
     }
 
-    public void setMapNodeTrio(MapNodeTrio mapNodeTrio) {
+    public void setMapNodeTrio (MapNodeTrio mapNodeTrio) {
         this.mapNodeTrio = mapNodeTrio;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals (Object obj) {
         MapNode mapNode = (MapNode) obj;
         return mapNode.mapNodeTrio.equals(mapNodeTrio);
     }

@@ -7,7 +7,6 @@ public class MapNodePiece {
 
     public MapNodePiece(MapNode mapNode) {
         this.mapNode = mapNode;
-        mapNode.setOccupiedByRoad(true);
     }
 
     public MapNode getMapNode() {
