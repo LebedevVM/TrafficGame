@@ -166,6 +166,9 @@ public class Car {
         if (pathQueue.size != 0) {
             findPath();
             if (pathQueue.size == 0) {
+                if (importNode != null) {
+                    importNode.carCrashed();
+                }
                 disappear();
                 return;
             }

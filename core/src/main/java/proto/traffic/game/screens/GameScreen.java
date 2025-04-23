@@ -33,14 +33,14 @@ public class GameScreen implements Screen {
     private boolean destruction = false;
 
     private final MapGraph mapGraph;
-    private final RoadGraph roadGraph = new RoadGraph();
+    private final RoadGraph roadGraph = new RoadGraph(this);
     private final PathGraph pathGraph = new PathGraph();
     private final RiverGraph riverGraph = new RiverGraph();
     private final CarManager carManager;
     private final BuildingManager buildingManager;
 
     private int score = 0;
-    private float budget = 100;
+    private float budget = 10;
 
     public GameScreen () {
         environment = new Environment();
@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
         carManager = new CarManager(pathGraph);
         roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
         roadDestructor = new RoadDestructor(roadGraph);
-        buildingManager = new BuildingManager(carManager, roadGraph, mapGraph);
+        buildingManager = new BuildingManager(this, carManager, roadGraph, mapGraph);
         camController = new CameraInputController(cam);
 
         Adapter inputProcessor = new Adapter(this);
@@ -77,6 +77,27 @@ public class GameScreen implements Screen {
     public void setDestruction (boolean destruction) {
         this.destruction = destruction;
         roadConstructor.setLastRoadPieceAsNull();
+    }
+
+    public void increaseScore () {
+        score += 10;
+        increaseBudget();
+    }
+
+    public void decreaseScore (int delta) {
+        score -= delta;
+    }
+
+    public void increaseBudget () {
+        budget += 1;
+    }
+
+    public void decreaseBudget (float delta) {
+        budget -= delta;
+    }
+
+    public float getBudget() {
+        return budget;
     }
 
     public void increaseLevel () {
@@ -115,6 +136,8 @@ public class GameScreen implements Screen {
     @Override
     public void render (float delta) {
         camController.update();
+
+        System.out.println(score + " " + budget);
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);

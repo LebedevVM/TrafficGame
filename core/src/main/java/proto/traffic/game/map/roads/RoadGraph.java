@@ -6,10 +6,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import proto.traffic.game.map.MapNode;
+import proto.traffic.game.screens.GameScreen;
 
 public class RoadGraph {
     ObjectMap<MapNode, RoadPiece> roadPieces = new ObjectMap<>();
     Array<RoadConnection> roadConnections = new Array<>();
+
+    private final GameScreen gameScreen;
+
+    public RoadGraph(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
 
     public void addRoadPiece (MapNode mapNode, RoadPiece roadPiece) {
         roadPieces.put(mapNode, roadPiece);
@@ -35,6 +42,14 @@ public class RoadGraph {
         if (!roadConnection.getStart().isDestructible() && !roadConnection.getEnd().isDestructible()) {
             return;
         }
+        float level = (roadConnection.getEnd().getLevel() + roadConnection.getStart().getLevel())/2f;
+        float lines = (roadConnection.getEnd().getLines() + roadConnection.getStart().getLines())/2f;
+        float cost = (1 + (level)*0.25f)*(1 + (lines-1)*0.25f);
+        if (gameScreen.getBudget() < cost) {
+            return;
+        }
+
+        gameScreen.decreaseBudget(cost);
 
         roadConnection.connectPathNodes();
         roadConnections.add(roadConnection);

@@ -39,5 +39,10 @@ public class ImportNode extends ParkingNode {
 
     public void carReached () {
         processingBuilding.carReached();
+        buildingManager.getGameScreen().increaseScore();
+    }
+
+    public void carCrashed () {
+        buildingManager.getGameScreen().decreaseScore(30);
     }
 }

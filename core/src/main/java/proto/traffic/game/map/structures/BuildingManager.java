@@ -8,6 +8,7 @@ import proto.traffic.game.map.path.PathNode;
 import proto.traffic.game.map.roads.RoadGraph;
 import proto.traffic.game.map.structures.buildings.Building;
 import proto.traffic.game.map.structures.nodes.*;
+import proto.traffic.game.screens.GameScreen;
 
 public class BuildingManager {
     private final ObjectMap<String, Array<ExportNode>> exportNodes = new ObjectMap<>();
@@ -20,10 +21,13 @@ public class BuildingManager {
     private final ImportNodesComparator importNodesComparator = new ImportNodesComparator();
     private final ReturnToNodeComparator returnToNodeComparator = new ReturnToNodeComparator();
 
-    private CarManager carManager;
+    private final CarManager carManager;
 
-    public BuildingManager(CarManager carManager, RoadGraph roadGraph, MapGraph mapGraph) {
+    private final GameScreen gameScreen;
+
+    public BuildingManager(GameScreen gameScreen, CarManager carManager, RoadGraph roadGraph, MapGraph mapGraph) {
         this.carManager = carManager;
+        this.gameScreen = gameScreen;
 
         Array<ExportNode> farmExportNodes = new Array<>();
         Array<ExportNode> cowExportNodes = new Array<>();
@@ -116,5 +120,9 @@ public class BuildingManager {
 
     public CarManager getCarManager () {
         return carManager;
+    }
+
+    public GameScreen getGameScreen() {
+        return gameScreen;
     }
 }

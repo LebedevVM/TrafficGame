@@ -33,6 +33,7 @@ public class RoadPiece extends MapNodePiece {
     private float scale = 1f;
 
     private final int level;
+    private final int lines;
 
     public RoadPiece (PathGraph pathGraph, MapNode mapNode, int level, int lines) {
         super(mapNode);
@@ -40,6 +41,7 @@ public class RoadPiece extends MapNodePiece {
 
         this.pathGraph = pathGraph;
         this.level = level;
+        this.lines = lines;
         this.mapNodeTrio = mapNode.getMapNodeTrio();
 
         destructionCircle = new Circle(mapNode.getPosition().x, mapNode.getPosition().z, Constants.roadRadius);
@@ -83,6 +85,10 @@ public class RoadPiece extends MapNodePiece {
 
     public int getLevel () {
         return level;
+    }
+
+    public int getLines() {
+        return lines;
     }
 
     public boolean contains (Vector2 click) {
