@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.input.Adapter;
 import proto.traffic.game.map.MapGraph;
-import proto.traffic.game.map.obstacles.RiverGraph;
+import proto.traffic.game.map.obstacles.ObstacleGraph;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.roads.RoadConstructor;
 import proto.traffic.game.map.roads.RoadDestructor;
@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
     private final MapGraph mapGraph;
     private final RoadGraph roadGraph = new RoadGraph(this);
     private final PathGraph pathGraph = new PathGraph();
-    private final RiverGraph riverGraph = new RiverGraph();
+    private final ObstacleGraph obstacleGraph = new ObstacleGraph(this);
     private final CarManager carManager;
     private final BuildingManager buildingManager;
 
@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
         cam.update();
 
         carManager = new CarManager(pathGraph);
-        roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, cam);
+        roadConstructor = new RoadConstructor(mapGraph, roadGraph, pathGraph, obstacleGraph, cam);
         roadDestructor = new RoadDestructor(roadGraph);
         buildingManager = new BuildingManager(this, carManager, roadGraph, mapGraph);
         camController = new CameraInputController(cam);
@@ -86,6 +86,9 @@ public class GameScreen implements Screen {
 
     public void decreaseScore (int delta) {
         score -= delta;
+        if (score < 0) {
+            score = 0;
+        }
     }
 
     public void increaseBudget () {
@@ -151,7 +154,7 @@ public class GameScreen implements Screen {
         roadGraph.show(modelBatch, environment);
         mapGraph.show(modelBatch, environment);
         pathGraph.show(modelBatch, environment);
-        riverGraph.show(modelBatch, environment);
+        obstacleGraph.show(modelBatch, environment);
         carManager.show(modelBatch, environment);
 
         modelBatch.end();

@@ -43,6 +43,14 @@ public class MapGraph {
         }
     }
 
+    public int getMapNodeIndex (MapNode mapNode) {
+        return zeroNodes.indexOf(mapNode, true);
+    }
+
+    public MapNode getMapNodeByIndex (int index) {
+        return zeroNodes.get(index);
+    }
+
     public Array<MapNode> getMapNodesInRectangle (Rectangle rectangle) {
         Array<MapNode> mapNodesInRectangle = new Array<>();
 

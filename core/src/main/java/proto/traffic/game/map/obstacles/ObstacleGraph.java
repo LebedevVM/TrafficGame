@@ -11,10 +11,18 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
+import proto.traffic.game.screens.GameScreen;
 
-public class RiverGraph {
+public class ObstacleGraph {
     private final ObjectMap<MapNode, RiverPiece> riverPieces = new ObjectMap<>();
+    private final ObjectMap<MapNode, ForestPiece> forestPieces = new ObjectMap<>();
     private final Array<RiverConnection> riverConnections = new Array<>();
+
+    private final GameScreen gameScreen;
+
+    public ObstacleGraph (GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
 
     public void connectRiverPieces (RiverPiece start, RiverPiece end) {
         ModelLoader loader = new ObjLoader();
@@ -34,8 +42,8 @@ public class RiverGraph {
         addRiverConnection(riverConnection);
     }
 
-    public void addRiverPiece (MapGraph mapGraph, Vector2 vector2) {
-        MapNode mapNode = mapGraph.mouseClick(vector2, 0);
+    public void addRiverPiece (MapGraph mapGraph, int index) {
+        MapNode mapNode = mapGraph.getMapNodeByIndex(index);
         RiverPiece riverPiece = new RiverPiece(mapNode);
         riverPieces.put(mapNode, riverPiece);
     }
@@ -43,6 +51,24 @@ public class RiverGraph {
     public void addRiverPiece (MapNode mapNode) {
         RiverPiece riverPiece = new RiverPiece(mapNode);
         riverPieces.put(mapNode, riverPiece);
+    }
+
+    public void removeForestPiece (MapNode mapNode) {
+        if (forestPieces.containsKey(mapNode)) {
+            forestPieces.remove(mapNode);
+            gameScreen.decreaseScore(30);
+        }
+    }
+
+    public void addForestPiece (MapNode mapNode) {
+        ForestPiece forestPiece = new ForestPiece(mapNode);
+        forestPieces.put(mapNode, forestPiece);
+    }
+
+    public void addForestPiece (MapGraph mapGraph, int index) {
+        MapNode mapNode = mapGraph.getMapNodeByIndex(index);
+        ForestPiece forestPiece = new ForestPiece(mapNode);
+        forestPieces.put(mapNode, forestPiece);
     }
 
     public void addRiverConnection (RiverConnection riverConnection) {
@@ -55,6 +81,9 @@ public class RiverGraph {
         }
         for (RiverConnection riverConnection : riverConnections) {
             riverConnection.show(batch, environment);
+        }
+        for (ForestPiece forestPiece : forestPieces.values().toArray()) {
+            forestPiece.show(batch, environment);
         }
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.collision.Ray;
 import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
+import proto.traffic.game.map.obstacles.ObstacleGraph;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.screens.GameScreen;
 
@@ -18,6 +19,7 @@ public class RoadConstructor {
     private final MapGraph mapGraph;
     private final RoadGraph roadGraph;
     private final PathGraph pathGraph;
+    private final ObstacleGraph obstacleGraph;
 
     private static int level = 0;
     private int roadLine = 1;
@@ -26,10 +28,11 @@ public class RoadConstructor {
 
     private RoadPiece lastRoadPiece;
 
-    public RoadConstructor(MapGraph mapGraph, RoadGraph roadGraph, PathGraph pathGraph, PerspectiveCamera cam) {
+    public RoadConstructor(MapGraph mapGraph, RoadGraph roadGraph, PathGraph pathGraph, ObstacleGraph obstacleGraph, PerspectiveCamera cam) {
         this.mapGraph = mapGraph;
         this.roadGraph = roadGraph;
         this.pathGraph = pathGraph;
+        this.obstacleGraph = obstacleGraph;
         this.cam = cam;
     }
 
@@ -39,6 +42,7 @@ public class RoadConstructor {
         if (mapNode == null) {
             return;
         }
+        obstacleGraph.removeForestPiece(mapNode);
         if (lastRoadPiece != null) {
             if (lastRoadPiece.getMapNodeTrio().equals(mapNode.getMapNodeTrio())) {
                 return;
@@ -66,6 +70,7 @@ public class RoadConstructor {
         if (mapNode == null) {
             return;
         }
+        obstacleGraph.removeForestPiece(mapNode);
         if (mapNode.isOccupiedByObstacle()) {
             lastRoadPiece = null;
             return;
