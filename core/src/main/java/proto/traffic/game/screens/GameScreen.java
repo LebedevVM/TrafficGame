@@ -40,12 +40,13 @@ public class GameScreen implements Screen {
     private final BuildingManager buildingManager;
 
     private int score = 0;
-    private float budget = 10;
+    private float budget = 1000;
 
     public GameScreen () {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+//        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, -1f, 0f));
 
         mapGraph = new MapGraph();
 
@@ -140,7 +141,7 @@ public class GameScreen implements Screen {
     public void render (float delta) {
         camController.update();
 
-        System.out.println(score + " " + budget);
+//        System.out.println(score + " " + budget);
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);

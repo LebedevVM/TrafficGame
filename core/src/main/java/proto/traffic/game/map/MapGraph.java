@@ -12,7 +12,7 @@ public class MapGraph {
     private final Array<MapNode> firstNodes = new Array<>();
     private final Array<MapNode> secondNodes = new Array<>();
 
-    private final int mapNodeDistance = Constants.mapNodeDistance;
+    private final float mapNodeDistance = Constants.mapNodeDistance;
 
     private float width = 100;
     private float height = width/6f*4f;
@@ -146,12 +146,12 @@ public class MapGraph {
         for (MapNode zeroNode : zeroNodes) {
             zeroNode.show(batch, environment);
         }
-        for (MapNode firstNode : firstNodes) {
-            firstNode.show(batch, environment);
-        }
-        for (MapNode secondNode : secondNodes) {
-            secondNode.show(batch, environment);
-        }
+//        for (MapNode firstNode : firstNodes) {
+//            firstNode.show(batch, environment);
+//        }
+//        for (MapNode secondNode : secondNodes) {
+//            secondNode.show(batch, environment);
+//        }
     }
 
     public float getWidth() {

@@ -1,13 +1,16 @@
 package proto.traffic.game.map;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import proto.traffic.game.Starter;
 import proto.traffic.game.constants.Constants;
 
 public class MapNode {
@@ -15,13 +18,18 @@ public class MapNode {
     private Circle circle;
     private Circle rangeCircle;
 
-    public Model model;
+    public AssetManager assets  = new AssetManager();
+
+
+//    public Model model;
     public ModelInstance instance;
 
     private MapNodeTrio mapNodeTrio;
 
     private boolean isOccupiedByRoad = false;
     private boolean isOccupiedByObstacle = false;
+
+    boolean loading = false;
 
     ModelBuilder modelBuilder;
 
@@ -30,11 +38,11 @@ public class MapNode {
         circle = new Circle(position.x, position.z, Constants.mapNodeDistance/2f);
         rangeCircle = new Circle(position.x, position.z, Constants.mapNodeDistance/1.5f);
 
-        modelBuilder = new ModelBuilder();
-        model = modelBuilder.createSphere(1, 1, 1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.YELLOW)),
-            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        Model model = Starter.assetManager.get("GrassTile.g3db", Model.class);
         instance = new ModelInstance(model);
         instance.transform.setToTranslation(position);
+        instance.transform.rotate(new Vector3(0, 1, 0), 30);
+//        instance.transform.scale(0.6f, 0.6f, 0.6f);
     }
 
     public boolean clicked (Vector2 click) {

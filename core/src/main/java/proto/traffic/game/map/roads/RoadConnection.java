@@ -17,7 +17,7 @@ public class RoadConnection {
 
     private final RoadGraph roadGraph;
 
-    private final int degrees;
+    private int degrees;
 
     protected Circle destructionCircle;
 
@@ -27,7 +27,7 @@ public class RoadConnection {
 
     private float scale = 1f;
 
-    public RoadConnection (RoadGraph roadGraph, RoadPiece start, RoadPiece end, Model model) {
+    public RoadConnection (RoadGraph roadGraph, RoadPiece start, RoadPiece end, Model model, boolean flip) {
         this.roadGraph = roadGraph;
         this.start = start;
         this.end = end;
@@ -40,11 +40,16 @@ public class RoadConnection {
 
         destructionCircle = new Circle(vector3.x, vector3.z, Constants.mapNodeDistance/4f);
 
-        degrees = Math.round(vector2.angleDeg());
+        degrees = 270 - Math.round(vector2.angleDeg());
+
+        if (flip) {
+            degrees += 180;
+        }
 
         modelInstance = new ModelInstance(model);
         modelInstance.transform.setToTranslation(vector3);
-        modelInstance.transform.rotate(new Vector3(0, 1, 0), (270 - degrees));
+        modelInstance.transform.rotate(new Vector3(0, 1, 0), degrees);
+//        modelInstance.transform.scale(0.6f, 1f, 0.6f);
     }
 
     public void connectPathNodes () {
@@ -56,6 +61,10 @@ public class RoadConnection {
         for (PathConnection pathConnection : start.getPathGraph().connectNodes(startPathNodes, endPathNodes)) {
             pathConnections.add(pathConnection);
         }
+    }
+
+    public int getDegrees() {
+        return degrees;
     }
 
     public void destroyPathConnections () {

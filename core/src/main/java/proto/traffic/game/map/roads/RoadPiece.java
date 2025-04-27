@@ -1,14 +1,12 @@
 package proto.traffic.game.map.roads;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Timer;
+import proto.traffic.game.Starter;
 import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.MapNodePiece;
@@ -18,14 +16,19 @@ import proto.traffic.game.map.path.batch.PathNodeBatch;
 import proto.traffic.game.map.path.batch.PathNodeBatchFactory;
 
 public class RoadPiece extends MapNodePiece {
-    private final Model model;
+//    private final Model model;
     private final ModelInstance instance;
+    private final Array<ModelInstance> instances = new Array<>();
+
+    private Model straightTriangleModel;
+    private Model equalTriangleModel;
 
     private final MapNodeTrio mapNodeTrio;
 
     private final Circle destructionCircle;
 
     private final Array<RoadConnection> roadConnections = new Array<>();
+    private final ObjectMap<Integer, RoadConnection> degreesToRoadConnections = new ObjectMap<>();
 
     private final PathNodeBatch pathNodeBatch;
     private final PathGraph pathGraph;
@@ -48,11 +51,16 @@ public class RoadPiece extends MapNodePiece {
 
         pathNodeBatch = PathNodeBatchFactory.generatePathNodeBatch(mapNode.getPosition(), pathGraph, lines);
 
-        ModelBuilder modelBuilder = new ModelBuilder();
-        model = modelBuilder.createCylinder(1, 1, 1, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
-            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+//        ModelBuilder modelBuilder = new ModelBuilder();
+//        Model model = modelBuilder.createCylinder(1, 1, 1, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+//            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+//        Model model = Starter.assetManager.get("MonoZeroRoadTile.g3db", Model.class);
+        Model model = Starter.assetManager.get("RoadTile.g3db", Model.class);
         instance = new ModelInstance(model);
         instance.transform.setToTranslation(mapNode.getPosition());
+//        instance.transform.rotate(new Vector3(0, 1, 0), 30);
+        float scale = 1 + (lines - 1) * 0.5f;
+        instance.transform.scale(scale, 1f, scale);
     }
 
     public void show (ModelBatch batch, Environment environment) {
@@ -100,7 +108,32 @@ public class RoadPiece extends MapNodePiece {
     }
 
     public void addRoadConnection (RoadConnection roadConnection) {
+        System.out.println(roadConnection.getDegrees());
+//        float deg = roadConnection.getDegrees();
+//        if (roadConnection.getEnd() == this) {
+//            if (deg > 180) {
+//                degreesToRoadConnections.put(360 - roadConnection.getDegrees(), roadConnection);
+//            }
+//            else {
+//                degreesToRoadConnections.put(roadConnection.getDegrees(), roadConnection);
+//            }
+//        }
+//        else {
+//            if (deg > 180) {
+//                degreesToRoadConnections.put(roadConnection.getDegrees(), roadConnection);
+//            }
+//            else {
+//                degreesToRoadConnections.put(360 - roadConnection.getDegrees(), roadConnection);
+//            }
+//        }
         roadConnections.add(roadConnection);
+    }
+
+    private void updateInstances () {
+        instances.clear();
+        if (roadConnections.size > 3) {
+
+        }
     }
 
     public PathNodeBatch getPathNodeBatch() {

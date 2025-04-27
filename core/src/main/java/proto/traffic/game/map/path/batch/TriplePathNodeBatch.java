@@ -68,6 +68,13 @@ public class TriplePathNodeBatch extends PathNodeBatch {
         pathConnections.add(pathGraph.connectNodes(left150Node, left90Node));
         pathConnections.add(pathGraph.connectNodes(right30Node, left150Node));
 
+        pathConnections.add(pathGraph.connectNodes(right30Node, right90Node));
+        pathConnections.add(pathGraph.connectNodes(right90Node, right150Node));
+        pathConnections.add(pathGraph.connectNodes(right150Node, left30Node));
+        pathConnections.add(pathGraph.connectNodes(left30Node, left90Node));
+        pathConnections.add(pathGraph.connectNodes(left90Node, left150Node));
+        pathConnections.add(pathGraph.connectNodes(left150Node, right30Node));
+
         pathConnections.add(pathGraph.connectNodes(centerNode, right30Node));
         pathConnections.add(pathGraph.connectNodes(centerNode, right90Node));
         pathConnections.add(pathGraph.connectNodes(centerNode, right150Node));

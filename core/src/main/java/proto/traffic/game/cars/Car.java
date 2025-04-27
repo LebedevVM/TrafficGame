@@ -155,7 +155,7 @@ public class Car {
             PathNode nextNode = pathQueue.first();
             nextNode.carCrossed();
             Vector3 nextPos = nextNode.getPosition();
-            if (Vector3.dst(position.x, position.y, position.z, nextPos.x, nextPos.y, nextPos.z) < 1) {
+            if (Vector3.dst(position.x, position.y, position.z, nextPos.x, nextPos.y, nextPos.z) < 0.5f) {
                 currentNode = pathQueue.removeFirst();
                 reachNextNode();
             }
@@ -185,6 +185,7 @@ public class Car {
             xzDegrees = - (float) Math.atan2(direction.z, direction.x) * MathUtils.radiansToDegrees;
             futureXZDegrees = - (float) Math.atan2(futureDirection.z, futureDirection.x) * MathUtils.radiansToDegrees;
 
+            System.out.println(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
             speedCoefficient = Constants.degreesToSpeedCoefficientMap.get(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
 
             if (currentXYDegrees == null) {
