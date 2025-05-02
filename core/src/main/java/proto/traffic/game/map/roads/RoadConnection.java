@@ -63,10 +63,6 @@ public class RoadConnection {
         }
     }
 
-    public int getDegrees() {
-        return degrees;
-    }
-
     public void destroyPathConnections () {
         start.getPathGraph().destroyNodeConnection(pathConnections);
         disappear();

@@ -101,8 +101,8 @@ public class BuildingGenerator {
     }
 
     private Array<Array<MapNode>> getMapNodesForBuilding (BuildingConstructionArea importBC, BuildingConstructionArea exportBC) {
-        Array<MapNode> exportMapNodes = farmBuildingConstructionArea.getMapNodesForBuilding();
-        Array<MapNode> importMapNodes = millBuildingConstructionArea.getMapNodesForBuilding();
+        Array<MapNode> exportMapNodes = importBC.getMapNodesForBuilding();
+        Array<MapNode> importMapNodes = exportBC.getMapNodesForBuilding();
 
         for (int i = 0; i < 10; i ++) {
             if (exportMapNodes.size < 3) {
@@ -125,13 +125,14 @@ public class BuildingGenerator {
         if (exportMapNodes.size < 3 || importMapNodes.size < 3) {
             return null;
         }
+
         Array<Array<MapNode>> array = new Array<>();
         array.add(exportMapNodes);
         array.add(importMapNodes);
         return array;
     }
 
-    private int generateRandomInt (int min, int max) {
+    private static int generateRandomInt (int min, int max) {
         return min + (int)(Math.random() * ((max - min) + 1));
     }
 }

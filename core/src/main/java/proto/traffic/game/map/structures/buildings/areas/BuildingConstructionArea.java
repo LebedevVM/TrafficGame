@@ -21,7 +21,7 @@ public class BuildingConstructionArea {
         }
 
         for (MapNode mapNode1 : mapNodes) {
-            if (mapNode1.isInRange(mapNode) && !mapNode1.isOccupied()) {
+            if (mapNode1.isInRange(mapNode) && !mapNode1.isOccupied() && mapNode1 != mapNode) {
                 mapNodesForBuilding.add(mapNode1);
                 if (mapNodesForBuilding.size == 3) {
                     break;

@@ -112,7 +112,7 @@ public class RoadConstructor {
             roadGraph.addRoadPiece(end.getMapNodeTrio().getFirstMapNode(), roadPiece);
             lastRoadPiece = roadPiece;
         }
-        return RoadFactory.makeRoadConnection(roadGraph, start, lastRoadPiece, true);
+        return RoadFactory.makeRoadConnection(roadGraph, start, lastRoadPiece);
     }
 
     public void setRoadLine (int roadLine) {
