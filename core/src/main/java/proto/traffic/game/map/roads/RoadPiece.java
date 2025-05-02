@@ -1,6 +1,10 @@
 package proto.traffic.game.map.roads;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -51,11 +55,11 @@ public class RoadPiece extends MapNodePiece {
 
         pathNodeBatch = PathNodeBatchFactory.generatePathNodeBatch(mapNode.getPosition(), pathGraph, lines);
 
-//        ModelBuilder modelBuilder = new ModelBuilder();
-//        Model model = modelBuilder.createCylinder(1, 1, 1, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
-//            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Model model = modelBuilder.createCylinder(2.6f, 0.52f, 2.6f, 10, new Material(ColorAttribute.createDiffuse(Color.BLACK)),
+            VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
 //        Model model = Starter.assetManager.get("MonoZeroRoadTile.g3db", Model.class);
-        Model model = Starter.assetManager.get("RoadTile.g3db", Model.class);
+//        Model model = Starter.assetManager.get("RoadTile.g3db", Model.class);
         instance = new ModelInstance(model);
         instance.transform.setToTranslation(mapNode.getPosition());
 //        instance.transform.rotate(new Vector3(0, 1, 0), 30);

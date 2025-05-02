@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
 
     public GameScreen () {
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, -1f, 0f));
 
@@ -103,6 +103,8 @@ public class GameScreen implements Screen {
     public float getBudget() {
         return budget;
     }
+
+    public void setRoadLine (int roadLine) {roadConstructor.setRoadLine(roadLine);}
 
     public void increaseLevel () {
         roadConstructor.increaseLevel();

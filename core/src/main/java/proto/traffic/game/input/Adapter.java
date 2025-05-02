@@ -30,6 +30,18 @@ public class Adapter extends InputAdapter {
             gameScreen.decreaseLevel();
             return false;
         }
+        if (Input.Keys.NUM_1 == keycode) {
+            gameScreen.setRoadLine(1);
+            return false;
+        }
+        if (Input.Keys.NUM_2 == keycode) {
+            gameScreen.setRoadLine(2);
+            return false;
+        }
+        if (Input.Keys.NUM_3 == keycode) {
+            gameScreen.setRoadLine(3);
+            return false;
+        }
 
         return false;
     }

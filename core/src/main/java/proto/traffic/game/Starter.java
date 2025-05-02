@@ -16,14 +16,42 @@ public class Starter extends Game {
     public void create() {
         assetManager.load("GrassTile.g3db", Model.class);
         assetManager.load("RoadTile.g3db", Model.class);
-        assetManager.load("MonoZeroRoadConnection.g3db", Model.class);
-        assetManager.load("MonoToDoubleZeroRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleFirstRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleSecondRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleToMonoFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleToMonoZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleToTripleFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleToTripleZeroToFirstRoadConnection.g3db", Model.class);
         assetManager.load("DoubleZeroRoadConnection.g3db", Model.class);
-        assetManager.load("TripleZeroRoadConnection.g3db", Model.class);
+        assetManager.load("DoubleZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("MonoFirstRoadConnection.g3db", Model.class);
+        assetManager.load("MonoFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("MonoSecondRoadConnection.g3db", Model.class);
+        assetManager.load("MonoToDoubleFirstRoadConnection.g3db", Model.class);
+        assetManager.load("MonoToDoubleFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("MonoToDoubleSecondRoadConnection.g3db", Model.class);
+        assetManager.load("MonoToDoubleZeroRoadConnection.g3db", Model.class);
+        assetManager.load("MonoToDoubleZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("MonoToTripleFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("MonoToTripleZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("MonoZeroRoadConnection.g3db", Model.class);
+        assetManager.load("MonoZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("TripleFirstRoadConnection.g3db", Model.class);
+        assetManager.load("TripleFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("TripleSecondRoadConnection.g3db", Model.class);
+        assetManager.load("TripleToDoubleFirstRoadConnection.g3db", Model.class);
+        assetManager.load("TripleToDoubleFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("TripleToDoubleSecondRoadConnection.g3db", Model.class);
         assetManager.load("TripleToDoubleZeroRoadConnection.g3db", Model.class);
+        assetManager.load("TripleToDoubleZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("TripleToMonoFirstRoadConnection.g3db", Model.class);
+        assetManager.load("TripleToMonoFirstToSecondRoadConnection.g3db", Model.class);
+        assetManager.load("TripleToMonoSecondRoadConnection.g3db", Model.class);
         assetManager.load("TripleToMonoZeroRoadConnection.g3db", Model.class);
-        assetManager.load("MonoZeroRoadTile.g3db", Model.class);
-        assetManager.load("DoubleZeroRoadTile.g3db", Model.class);
+        assetManager.load("TripleToMonoZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("TripleZeroRoadConnection.g3db", Model.class);
+        assetManager.load("TripleZeroToFirstRoadConnection.g3db", Model.class);
     }
 
     private void doneLoading() {

@@ -41,7 +41,7 @@ public class MapNode {
         Model model = Starter.assetManager.get("GrassTile.g3db", Model.class);
         instance = new ModelInstance(model);
         instance.transform.setToTranslation(position);
-        instance.transform.rotate(new Vector3(0, 1, 0), 30);
+//        instance.transform.rotate(new Vector3(0, 1, 0), 30);
 //        instance.transform.scale(0.6f, 0.6f, 0.6f);
     }
 

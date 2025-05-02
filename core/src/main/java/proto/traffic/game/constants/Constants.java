@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public abstract class Constants {
     public static final float mapNodeDistance = 22.5f;
-    public static final int bridgeHeight = 2;
+    public static final int bridgeHeight = 5;
     public static final int roadRadius = 2;
     public static final int pathNodeDistance = 2;
     public static final int maxCarSpeed = 10;
