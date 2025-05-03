@@ -131,7 +131,7 @@ public class GameScreen implements Screen {
     }
 
     public void addCar () {
-        carManager.addCar();
+//        carManager.addCar();
     }
 
     @Override
@@ -148,12 +148,13 @@ public class GameScreen implements Screen {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        buildingManager.render();
+
 
         carManager.render(delta);
 
         modelBatch.begin(cam);
 
+        buildingManager.render(modelBatch, environment);
         roadGraph.show(modelBatch, environment);
         mapGraph.show(modelBatch, environment);
         pathGraph.show(modelBatch, environment);

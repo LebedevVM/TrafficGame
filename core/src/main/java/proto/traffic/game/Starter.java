@@ -15,6 +15,9 @@ public class Starter extends Game {
     @Override
     public void create() {
         assetManager.load("GrassTile.g3db", Model.class);
+        assetManager.load("RedTractor.g3db", Model.class);
+        assetManager.load("BlueTractor.g3db", Model.class);
+        assetManager.load("GreenTractor.g3db", Model.class);
         assetManager.load("RoadTile.g3db", Model.class);
         assetManager.load("DoubleFirstRoadConnection.g3db", Model.class);
         assetManager.load("DoubleFirstToSecondRoadConnection.g3db", Model.class);
@@ -52,6 +55,12 @@ public class Starter extends Game {
         assetManager.load("TripleToMonoZeroToFirstRoadConnection.g3db", Model.class);
         assetManager.load("TripleZeroRoadConnection.g3db", Model.class);
         assetManager.load("TripleZeroToFirstRoadConnection.g3db", Model.class);
+        assetManager.load("Farm.g3db", Model.class);
+        assetManager.load("Garden.g3db", Model.class);
+        assetManager.load("CowFarm.g3db", Model.class);
+        assetManager.load("Mill.g3db", Model.class);
+        assetManager.load("FruitFactory.g3db", Model.class);
+        assetManager.load("MilkFactory.g3db", Model.class);
     }
 
     private void doneLoading() {

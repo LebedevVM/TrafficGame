@@ -1,5 +1,7 @@
 package proto.traffic.game.map.structures;
 
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import proto.traffic.game.cars.CarManager;
@@ -82,7 +84,7 @@ public class BuildingManager {
         return null;
     }
 
-    public void render () {
+    public void render (ModelBatch modelBatch, Environment environment) {
         for (Array<ExportNode> nodes : exportNodes.values().toArray()) {
             for (ExportNode node : nodes) {
                 node.spawnCar();
@@ -94,7 +96,7 @@ public class BuildingManager {
             }
         }
         for (Building building : buildings) {
-            building.render();
+            building.render(modelBatch, environment);
         }
     }
 

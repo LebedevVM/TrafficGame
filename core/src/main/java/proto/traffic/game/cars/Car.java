@@ -29,7 +29,7 @@ public class Car {
     private final float acceleration = Constants.carAcceleration;
     private final float rotationSpeed = Constants.carRotationSpeed;
 
-    private float scale = 0.5f;
+    private float scale = 1f;
 
     private CarManager carManager;
 
@@ -50,7 +50,7 @@ public class Car {
     private float futureXZDegrees;
     private float speedCoefficient = 1;
 
-    public Car (CarManager carManager, PathGraph pathGraph, PathNode currentNode, PathNode goalNode, ImportNode importNode) {
+    public Car (CarManager carManager, PathGraph pathGraph, PathNode currentNode, PathNode goalNode, ImportNode importNode, Model model) {
         this.pathGraph = pathGraph;
         this.goalNode = goalNode;
         this.currentNode = currentNode;
@@ -62,15 +62,15 @@ public class Car {
 
         findPath();
         reachNextNode();
-
-        ModelLoader loader = new ObjLoader();
-        Model model = loader.loadModel(Gdx.files.internal("car.obj"));
+//
+//        ModelLoader loader = new ObjLoader();
+//        Model model = loader.loadModel(Gdx.files.internal("car.obj"));
 
         instance = new ModelInstance(model);
         instance.transform.setToTranslation(position);
         instance.transform.rotate(new Vector3(0,1,0), 45);
 
-        instance.transform.scale(0.5f, 0.5f, 0.5f);
+//        instance.transform.scale(0.5f, 0.5f, 0.5f);
     }
 
     public void findPath () {
@@ -83,6 +83,7 @@ public class Car {
 
     public void render (float delta) {
         checkNextNode();
+        changeXZDegrees(delta);
         if (currentSpeed < speed) {
             currentSpeed += acceleration * delta;
         }
@@ -101,9 +102,6 @@ public class Car {
         if (currentXYDegrees > xyDegrees) {
             currentXYDegrees -= rotationSpeed*delta;
         }
-
-        changeXZDegrees(delta);
-
 
         displacement.set(direction).setLength(currentSpeed*delta);
         position.add(displacement);
@@ -137,6 +135,13 @@ public class Car {
         }
         if (degreesDelta < 0) {
             currentXZDegrees -= rotationSpeed*delta;
+        }
+        speedCoefficient = 1f;
+        if (Math.abs(degreesDelta) > 10) {
+            speedCoefficient = 0.8f;
+        }
+        if (Math.abs(degreesDelta) > 20) {
+            speedCoefficient = 0.6f;
         }
     }
 
@@ -185,12 +190,12 @@ public class Car {
             xzDegrees = - (float) Math.atan2(direction.z, direction.x) * MathUtils.radiansToDegrees;
             futureXZDegrees = - (float) Math.atan2(futureDirection.z, futureDirection.x) * MathUtils.radiansToDegrees;
 
-            System.out.println(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
-            try {
-                speedCoefficient = Constants.degreesToSpeedCoefficientMap.get(Math.round(Math.abs(futureXZDegrees - xzDegrees)) / 10);
-            } catch (Exception ignored) {
-                speedCoefficient = 1;
-            }
+//            System.out.println(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
+//            try {
+//                speedCoefficient = Constants.degreesToSpeedCoefficientMap.get(Math.round(Math.abs(futureXZDegrees - xzDegrees)) / 10);
+//            } catch (Exception ignored) {
+//                speedCoefficient = 1;
+//            }
 
             if (currentXYDegrees == null) {
                 currentXYDegrees = xyDegrees;
@@ -217,7 +222,7 @@ public class Car {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                scale -= 0.01f;
+                scale -= 0.02f;
             }
         }, 0, 0.01f, 50);
         Timer.schedule(new Timer.Task() {

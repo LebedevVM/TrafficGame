@@ -5,11 +5,11 @@ import com.badlogic.gdx.math.Vector3;
 public abstract class MapNodePiece {
     protected MapNode mapNode;
 
-    public MapNodePiece(MapNode mapNode) {
+    public MapNodePiece (MapNode mapNode) {
         this.mapNode = mapNode;
     }
 
-    public MapNode getMapNode() {
+    public MapNode getMapNode () {
         return mapNode;
     }
 
