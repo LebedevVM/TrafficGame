@@ -45,7 +45,7 @@ public class ExportNode extends ParkingNode {
             return;
         }
 
-        carManager.addCar(pathNode, importNode.getPathNode(), importNode);
+        carManager.addCar(pathNode, importNode.getPathNode(), importNode, buildingName);
         extractionBuilding.carSpawned();
         exportNum -= 1;
         importNode.decreaseNeedsNum();

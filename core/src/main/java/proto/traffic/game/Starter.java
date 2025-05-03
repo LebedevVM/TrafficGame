@@ -15,6 +15,9 @@ public class Starter extends Game {
     @Override
     public void create() {
         assetManager.load("GrassTile.g3db", Model.class);
+        assetManager.load("RedTractor.g3db", Model.class);
+        assetManager.load("BlueTractor.g3db", Model.class);
+        assetManager.load("GreenTractor.g3db", Model.class);
         assetManager.load("RoadTile.g3db", Model.class);
         assetManager.load("DoubleFirstRoadConnection.g3db", Model.class);
         assetManager.load("DoubleFirstToSecondRoadConnection.g3db", Model.class);

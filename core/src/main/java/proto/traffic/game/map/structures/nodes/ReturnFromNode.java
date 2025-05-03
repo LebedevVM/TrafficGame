@@ -32,7 +32,7 @@ public class ReturnFromNode extends ParkingNode {
             return;
         }
 
-        carManager.addCar(pathNode, returnToNode.getPathNode(), null);
+        carManager.addCar(pathNode, returnToNode.getPathNode(), null, buildingName);
         carNum -= 1;
         returnToNode.decreaseNeedsNum();
     }

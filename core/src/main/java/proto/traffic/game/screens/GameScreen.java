@@ -131,7 +131,7 @@ public class GameScreen implements Screen {
     }
 
     public void addCar () {
-        carManager.addCar();
+//        carManager.addCar();
     }
 
     @Override

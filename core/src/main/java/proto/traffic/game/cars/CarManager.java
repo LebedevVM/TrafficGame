@@ -17,13 +17,14 @@ public class CarManager {
         this.pathGraph = pathGraph;
     }
 
-    public void addCar () {
-        Car car = new Car(this, pathGraph, pathGraph.getFirstPathNode(), pathGraph.getLastPathNode(), null);
-        cars.add(car);
-    }
+//    public void addCar () {
+////        Car car = new Car(this, pathGraph, pathGraph.getFirstPathNode(), pathGraph.getLastPathNode(), null);
+////        cars.add(car);
+//    }
 
-    public void addCar (PathNode start, PathNode end, ImportNode importNode) {
-        Car car = new Car(this, pathGraph, start, end, importNode);
+    public void addCar (PathNode start, PathNode end, ImportNode importNode, String name) {
+//        Car car = new Car(this, pathGraph, start, end, importNode);
+        Car car = CarFactory.createCar(this, start, end, importNode, name);
         cars.add(car);
     }
 
