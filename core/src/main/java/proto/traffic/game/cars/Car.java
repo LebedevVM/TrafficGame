@@ -87,7 +87,7 @@ public class Car {
             currentSpeed += acceleration * delta;
         }
         if (currentSpeed > speed) {
-            currentSpeed -= acceleration*20 * delta;
+            currentSpeed -= acceleration*10 * delta;
         }
         if (carManager.checkCollision(this)) {
             speed = 0;
@@ -186,7 +186,11 @@ public class Car {
             futureXZDegrees = - (float) Math.atan2(futureDirection.z, futureDirection.x) * MathUtils.radiansToDegrees;
 
             System.out.println(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
-            speedCoefficient = Constants.degreesToSpeedCoefficientMap.get(Math.round(Math.abs(futureXZDegrees - xzDegrees))/10);
+            try {
+                speedCoefficient = Constants.degreesToSpeedCoefficientMap.get(Math.round(Math.abs(futureXZDegrees - xzDegrees)) / 10);
+            } catch (Exception ignored) {
+                speedCoefficient = 1;
+            }
 
             if (currentXYDegrees == null) {
                 currentXYDegrees = xyDegrees;

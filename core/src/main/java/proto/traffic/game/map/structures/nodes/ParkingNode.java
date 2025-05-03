@@ -23,7 +23,7 @@ public class ParkingNode {
         this.buildingManager = buildingManager;
         this.carManager = carManager;
         this.roadPiece = new IndestructibleRoadPiece(carManager.getPathGraph(), mapNode, 0, 1);
-        this.pathNode = roadPiece.getPathNodeBatch().getPathNodeByDegrees(30).first();
+        this.pathNode = roadPiece.getPathNodeBatch().getPathNodeByDegrees(0).first();
         this.sphere = new Sphere(mapNode.getPosition(), Constants.carSightRadius);
         roadGraph.addRoadPiece(mapNode, roadPiece);
     }

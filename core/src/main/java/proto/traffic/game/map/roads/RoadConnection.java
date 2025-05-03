@@ -42,19 +42,22 @@ public class RoadConnection {
 
         degrees = 270 - Math.round(vector2.angleDeg());
 
-        if (flip) {
-            degrees += 180;
-        }
-
         modelInstance = new ModelInstance(model);
         modelInstance.transform.setToTranslation(vector3);
         modelInstance.transform.rotate(new Vector3(0, 1, 0), degrees);
+        if (flip) {
+            modelInstance.transform.rotate(new Vector3(0, 1, 0), 180);
+        }
 //        modelInstance.transform.scale(0.6f, 1f, 0.6f);
     }
 
     public void connectPathNodes () {
-        Array<PathNode> startPathNodes = start.getPathNodeBatch().getPathNodeByDegrees(degrees);
+        System.out.println(degrees);
+        Array<PathNode> startPathNodes = start.getPathNodeBatch().getPathNodeByDegrees(degrees + 180);
         Array<PathNode> endPathNodes = end.getPathNodeBatch().getPathNodeByDegrees(degrees);
+        System.out.println((degrees + 180) + " " + degrees);
+
+        System.out.println(endPathNodes.first().getPosition());
         if (startPathNodes == null || endPathNodes == null) {
             return;
         }

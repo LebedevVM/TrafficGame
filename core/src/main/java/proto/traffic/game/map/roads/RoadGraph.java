@@ -39,9 +39,9 @@ public class RoadGraph {
         if (roadConnection.getEnd() == roadConnection.getStart()) {
             return;
         }
-        if (!roadConnection.getStart().isDestructible() && !roadConnection.getEnd().isDestructible()) {
-            return;
-        }
+//        if (!roadConnection.getStart().isDestructible() && !roadConnection.getEnd().isDestructible()) {
+//            return;
+//        }
         float level = (roadConnection.getEnd().getLevel() + roadConnection.getStart().getLevel())/2f;
         float lines = (roadConnection.getEnd().getLines() + roadConnection.getStart().getLines())/2f;
         float cost = (1 + (level)*0.25f)*(1 + (lines-1)*0.25f);

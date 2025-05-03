@@ -55,6 +55,11 @@ public class PathGraph  implements IndexedGraph<PathNode> {
         return pathConnection;
     }
 
+    public void connectBothNodes (PathNode startNode, PathNode endNode, Array<PathConnection> connectedNodes) {
+        connectedNodes.add(connectNodes(startNode, endNode));
+        connectedNodes.add(connectNodes(endNode, startNode));
+    }
+
     public Array<PathConnection> connectNodes (Array<PathNode> startNodes, Array<PathNode> endNodes) {
         Array<PathConnection> connectedNodes = new Array<>();
         if (startNodes == null || endNodes == null) {
