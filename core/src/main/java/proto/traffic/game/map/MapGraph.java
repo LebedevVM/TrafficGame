@@ -14,7 +14,7 @@ public class MapGraph {
 
     private final float mapNodeDistance = Constants.mapNodeDistance;
 
-    private float width = 100;
+    private float width = 10 * Constants.mapNodeDistance;
     private float height = width/6f*4f;
 
     public MapGraph () {

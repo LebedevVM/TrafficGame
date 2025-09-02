@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import proto.traffic.game.Starter;
 import proto.traffic.game.constants.Constants;
 
 public class RiverConnection {
@@ -14,9 +15,11 @@ public class RiverConnection {
     private RiverPiece end;
     private ModelInstance instance;
 
-    public RiverConnection (RiverPiece start, RiverPiece end, Model model) {
+    public RiverConnection (RiverPiece start, RiverPiece end) {
         this.start = start;
         this.end = end;
+
+        Model model = Starter.assetManager.get("RiverConnection.g3db", Model.class);
 
         Vector2 vector2 = new Vector2(this.start.getPosition().x - end.getPosition().x, this.start.getPosition().z - end.getPosition().z);
 
@@ -29,6 +32,15 @@ public class RiverConnection {
         instance = new ModelInstance(model);
         instance.transform.setToTranslation(vector3);
         instance.transform.rotate(new Vector3(0, 1, 0), (270 - degrees));
+        this.instance.transform.scale(Constants.scale, Constants.scale, Constants.scale);
+    }
+
+    public RiverPiece getStart () {
+        return start;
+    }
+
+    public RiverPiece getEnd () {
+        return end;
     }
 
     public void show (ModelBatch batch, Environment environment) {

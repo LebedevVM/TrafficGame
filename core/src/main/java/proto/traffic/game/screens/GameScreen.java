@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector2;
 import proto.traffic.game.cars.CarManager;
-import proto.traffic.game.input.Adapter;
+import proto.traffic.game.input.GameScreenAdapter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.obstacles.ObstacleGraph;
 import proto.traffic.game.map.path.PathGraph;
@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
     private final MapGraph mapGraph;
     private final RoadGraph roadGraph = new RoadGraph(this);
     private final PathGraph pathGraph = new PathGraph();
-    private final ObstacleGraph obstacleGraph = new ObstacleGraph(this);
+    private final ObstacleGraph obstacleGraph = new ObstacleGraph();
     private final CarManager carManager;
     private final BuildingManager buildingManager;
 
@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
     private float budget = 1000;
 
     public GameScreen () {
+        obstacleGraph.setGameScreen(this);
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
@@ -65,7 +66,7 @@ public class GameScreen implements Screen {
         buildingManager = new BuildingManager(this, carManager, roadGraph, mapGraph);
         camController = new CameraInputController(cam);
 
-        Adapter inputProcessor = new Adapter(this);
+        GameScreenAdapter inputProcessor = new GameScreenAdapter(this);
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(inputProcessor);

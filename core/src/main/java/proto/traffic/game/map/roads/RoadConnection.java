@@ -49,6 +49,7 @@ public class RoadConnection {
             modelInstance.transform.rotate(new Vector3(0, 1, 0), 180);
         }
 //        modelInstance.transform.scale(0.6f, 1f, 0.6f);
+        modelInstance.transform.scale(Constants.scale, Constants.scale, Constants.scale);
     }
 
     public void connectPathNodes () {

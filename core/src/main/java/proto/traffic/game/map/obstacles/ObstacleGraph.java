@@ -18,16 +18,11 @@ public class ObstacleGraph {
     private final ObjectMap<MapNode, ForestPiece> forestPieces = new ObjectMap<>();
     private final Array<RiverConnection> riverConnections = new Array<>();
 
-    private final GameScreen gameScreen;
-
-    public ObstacleGraph (GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
-    }
+    private GameScreen gameScreen;
 
     public void connectRiverPieces (RiverPiece start, RiverPiece end) {
         ModelLoader loader = new ObjLoader();
-        Model model = loader.loadModel(Gdx.files.internal("zeroMonoRoadConnection.obj"));
-        RiverConnection riverConnection = new RiverConnection(start, end, model);
+        RiverConnection riverConnection = new RiverConnection(start, end);
         addRiverConnection(riverConnection);
     }
 
@@ -36,9 +31,9 @@ public class ObstacleGraph {
     }
 
     public void connectRiverPieces (MapNode start, MapNode end) {
+        System.out.println("!!!");
         ModelLoader loader = new ObjLoader();
-        Model model = loader.loadModel(Gdx.files.internal("zeroMonoRoadConnection.obj"));
-        RiverConnection riverConnection = new RiverConnection(riverPieces.get(start), riverPieces.get(end), model);
+        RiverConnection riverConnection = new RiverConnection(riverPieces.get(start), riverPieces.get(end));
         addRiverConnection(riverConnection);
     }
 
@@ -53,10 +48,16 @@ public class ObstacleGraph {
         riverPieces.put(mapNode, riverPiece);
     }
 
+    public RiverPiece getRiverPiece (MapNode mapNode) {
+        return riverPieces.get(mapNode);
+    }
+
     public void removeForestPiece (MapNode mapNode) {
         if (forestPieces.containsKey(mapNode)) {
             forestPieces.remove(mapNode);
-            gameScreen.decreaseScore(30);
+            if (gameScreen != null) {
+                gameScreen.decreaseScore(30);
+            }
         }
     }
 
@@ -85,5 +86,21 @@ public class ObstacleGraph {
         for (ForestPiece forestPiece : forestPieces.values().toArray()) {
             forestPiece.show(batch, environment);
         }
+    }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    public ObjectMap<MapNode, RiverPiece> getRiverPieces() {
+        return riverPieces;
+    }
+
+    public ObjectMap<MapNode, ForestPiece> getForestPieces() {
+        return forestPieces;
+    }
+
+    public Array<RiverConnection> getRiverConnections() {
+        return riverConnections;
     }
 }

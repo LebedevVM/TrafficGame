@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import proto.traffic.game.screens.EditorScreen;
 import proto.traffic.game.screens.GameScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -61,11 +62,14 @@ public class Starter extends Game {
         assetManager.load("Mill.g3db", Model.class);
         assetManager.load("FruitFactory.g3db", Model.class);
         assetManager.load("MilkFactory.g3db", Model.class);
+        assetManager.load("ForestPiece.g3db", Model.class);
+        assetManager.load("RiverPiece.g3db", Model.class);
+        assetManager.load("RiverConnection.g3db", Model.class);
     }
 
     private void doneLoading() {
         loading = false;
-        this.setScreen(new GameScreen());
+        this.setScreen(new EditorScreen());
     }
 
     @Override

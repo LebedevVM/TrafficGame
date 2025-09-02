@@ -3,8 +3,9 @@ package proto.traffic.game.constants;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public abstract class Constants {
-    public static final float mapNodeDistance = 22.5f;
-    public static final int bridgeHeight = 5;
+    public static final float scale = 0.5f;
+    public static final float mapNodeDistance = 22.5f*scale;
+    public static final float bridgeHeight = 5*scale;
     public static final int roadRadius = 2;
     public static final int pathNodeDistance = 2;
     public static final float pathNodeRadius = 1.3f;

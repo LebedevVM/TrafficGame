@@ -48,6 +48,7 @@ public class RoadPiece extends MapNodePiece {
         instance.transform.setToTranslation(mapNode.getPosition());
         float scale = 1 + (lines - 1) * 0.5f;
         instance.transform.scale(scale, 1f, scale);
+        instance.transform.scale(Constants.scale, Constants.scale, Constants.scale);
     }
 
     public void show (ModelBatch batch, Environment environment) {

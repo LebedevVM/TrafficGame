@@ -43,6 +43,7 @@ public class MapNode {
         instance.transform.setToTranslation(position);
 //        instance.transform.rotate(new Vector3(0, 1, 0), 30);
 //        instance.transform.scale(0.6f, 0.6f, 0.6f);
+        this.instance.transform.scale(Constants.scale, Constants.scale, Constants.scale);
     }
 
     public boolean clicked (Vector2 click) {

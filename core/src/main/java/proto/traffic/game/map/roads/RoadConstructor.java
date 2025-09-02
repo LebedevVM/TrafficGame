@@ -28,7 +28,7 @@ public class RoadConstructor {
 
     private RoadPiece lastRoadPiece;
 
-    public RoadConstructor(MapGraph mapGraph, RoadGraph roadGraph, PathGraph pathGraph, ObstacleGraph obstacleGraph, PerspectiveCamera cam) {
+    public RoadConstructor (MapGraph mapGraph, RoadGraph roadGraph, PathGraph pathGraph, ObstacleGraph obstacleGraph, PerspectiveCamera cam) {
         this.mapGraph = mapGraph;
         this.roadGraph = roadGraph;
         this.pathGraph = pathGraph;

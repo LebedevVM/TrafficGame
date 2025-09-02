@@ -3,6 +3,7 @@ package proto.traffic.game.map.structures.buildings;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import proto.traffic.game.constants.Constants;
 import proto.traffic.game.map.MapNode;
 import proto.traffic.game.map.MapNodePiece;
 
@@ -13,6 +14,7 @@ public class BuildingNode extends MapNodePiece {
         super(mapNode);
         this.instance = instance;
         this.instance.transform.setToTranslation(mapNode.getPosition());
+        this.instance.transform.scale(Constants.scale, Constants.scale, Constants.scale);
     }
 
     public void render (ModelBatch batch, Environment environment) {
