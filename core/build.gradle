@@ -6,6 +6,7 @@ dependencies {
   api "space.earlygrey:shapedrawer:$shapeDrawerVersion"
   api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
   api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
   implementation 'com.google.code.gson:gson:2.8.9'
 
   if(enableGraalNative == 'true') {

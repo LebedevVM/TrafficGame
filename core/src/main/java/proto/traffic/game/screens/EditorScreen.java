@@ -12,19 +12,18 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector2;
 import proto.traffic.game.input.EditorScreenAdapter;
-import proto.traffic.game.input.GameScreenAdapter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.obstacles.ObstacleConstructor;
 import proto.traffic.game.map.obstacles.ObstacleGraph;
 
-public class EditorScreen  implements Screen {
+public class EditorScreen implements Screen {
     private final Environment environment;
     public static PerspectiveCamera cam;
     private final CameraInputController camController;
     private final ModelBatch modelBatch;
 
     private final MapGraph mapGraph;
-    private final ObstacleGraph obstacleGraph = new ObstacleGraph();
+    private final ObstacleGraph obstacleGraph;
 
     private final ObstacleConstructor obstacleConstructor;
 
@@ -35,6 +34,7 @@ public class EditorScreen  implements Screen {
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, -1f, 0f));
 
         mapGraph = new MapGraph();
+        obstacleGraph = new ObstacleGraph(mapGraph);
 
         modelBatch = new ModelBatch();
 

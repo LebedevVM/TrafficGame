@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import proto.traffic.game.screens.EditorScreen;
 import proto.traffic.game.screens.GameScreen;
+import proto.traffic.game.screens.MenuScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Starter extends Game {
@@ -69,7 +70,7 @@ public class Starter extends Game {
 
     private void doneLoading() {
         loading = false;
-        this.setScreen(new EditorScreen());
+        this.setScreen(new MenuScreen());
     }
 
     @Override

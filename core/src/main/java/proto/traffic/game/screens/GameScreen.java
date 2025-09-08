@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
     private final MapGraph mapGraph;
     private final RoadGraph roadGraph = new RoadGraph(this);
     private final PathGraph pathGraph = new PathGraph();
-    private final ObstacleGraph obstacleGraph = new ObstacleGraph();
+    private final ObstacleGraph obstacleGraph;
     private final CarManager carManager;
     private final BuildingManager buildingManager;
 
@@ -43,13 +43,15 @@ public class GameScreen implements Screen {
     private float budget = 1000;
 
     public GameScreen () {
-        obstacleGraph.setGameScreen(this);
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, -1f, 0f));
 
         mapGraph = new MapGraph();
+
+        obstacleGraph = new ObstacleGraph(mapGraph);
+        obstacleGraph.setGameScreen(this);
 
         modelBatch = new ModelBatch();
 

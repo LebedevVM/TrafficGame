@@ -112,7 +112,7 @@ public class MapGraph {
         return null;
     }
 
-    private MapNode checkZeroNodes (Vector2 vector2) {
+    public MapNode checkZeroNodes (Vector2 vector2) {
         for (MapNode zeroNode : zeroNodes) {
             if (zeroNode.clicked(vector2)) {
                 return zeroNode;

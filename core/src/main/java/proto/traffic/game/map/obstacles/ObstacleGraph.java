@@ -11,17 +11,41 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.MapNode;
+import proto.traffic.game.map.obstacles.data.ConnectionData;
+import proto.traffic.game.map.obstacles.data.ObstacleData;
+import proto.traffic.game.map.obstacles.data.TileData;
 import proto.traffic.game.screens.GameScreen;
 
 public class ObstacleGraph {
-    private final ObjectMap<MapNode, RiverPiece> riverPieces = new ObjectMap<>();
     private final ObjectMap<MapNode, ForestPiece> forestPieces = new ObjectMap<>();
+    private final ObjectMap<MapNode, RiverPiece> riverPieces = new ObjectMap<>();
     private final Array<RiverConnection> riverConnections = new Array<>();
+
+    private final MapGraph mapGraph;
+
+    public ObstacleGraph (MapGraph mapGraph) {
+        this.mapGraph = mapGraph;
+    }
 
     private GameScreen gameScreen;
 
+    public void setObstacleData (ObstacleData obstacleData) {
+        forestPieces.clear();
+        riverPieces.clear();
+        riverConnections.clear();
+
+        for (TileData forest : obstacleData.getForests()) {
+            addForestPiece(mapGraph.checkZeroNodes(new Vector2(forest.getX(), forest.getY())));
+        }
+        for (TileData river : obstacleData.getRivers()) {
+            addRiverPiece(mapGraph.checkZeroNodes(new Vector2(river.getX(), river.getY())));
+        }
+        for (ConnectionData riverConnection : obstacleData.getRiverConnections()) {
+            connectRiverPieces(mapGraph, riverConnection.getFirstTilePosition(), riverConnection.getSecondTilePosition());
+        }
+    }
+
     public void connectRiverPieces (RiverPiece start, RiverPiece end) {
-        ModelLoader loader = new ObjLoader();
         RiverConnection riverConnection = new RiverConnection(start, end);
         addRiverConnection(riverConnection);
     }
@@ -31,8 +55,6 @@ public class ObstacleGraph {
     }
 
     public void connectRiverPieces (MapNode start, MapNode end) {
-        System.out.println("!!!");
-        ModelLoader loader = new ObjLoader();
         RiverConnection riverConnection = new RiverConnection(riverPieces.get(start), riverPieces.get(end));
         addRiverConnection(riverConnection);
     }
