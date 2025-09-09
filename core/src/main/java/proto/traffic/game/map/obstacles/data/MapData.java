@@ -25,4 +25,11 @@ public class MapData {
     public void setAddress (List<String> address) {
         this.address = address;
     }
+
+    @Override
+    public String toString () {
+        return "MapData{" +
+            "address=" + address +
+            '}';
+    }
 }

@@ -11,10 +11,12 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector2;
+import proto.traffic.game.Starter;
 import proto.traffic.game.cars.CarManager;
 import proto.traffic.game.input.GameScreenAdapter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.obstacles.ObstacleGraph;
+import proto.traffic.game.map.obstacles.data.ObstacleData;
 import proto.traffic.game.map.path.PathGraph;
 import proto.traffic.game.map.roads.RoadConstructor;
 import proto.traffic.game.map.roads.RoadDestructor;
@@ -42,7 +44,11 @@ public class GameScreen implements Screen {
     private int score = 0;
     private float budget = 1000;
 
-    public GameScreen () {
+    private final Starter starter;
+
+    public GameScreen (Starter starter, ObstacleData obstacleData) {
+        this.starter = starter;
+
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
@@ -52,6 +58,8 @@ public class GameScreen implements Screen {
 
         obstacleGraph = new ObstacleGraph(mapGraph);
         obstacleGraph.setGameScreen(this);
+
+        obstacleGraph.setObstacleData(obstacleData);
 
         modelBatch = new ModelBatch();
 
