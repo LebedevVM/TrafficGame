@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import proto.traffic.game.map.obstacles.data.ObstacleData;
 import proto.traffic.game.screens.EditorScreen;
 import proto.traffic.game.screens.GameScreen;
 import proto.traffic.game.screens.MenuScreen;
@@ -70,7 +71,15 @@ public class Starter extends Game {
 
     private void doneLoading() {
         loading = false;
-        this.setScreen(new MenuScreen());
+        this.setScreen(new MenuScreen(this));
+    }
+
+    public void setGameScreen (ObstacleData obstacleData) {
+        this.setScreen(new GameScreen(this, obstacleData));
+    }
+
+    public void setMenuScreen () {
+        this.setScreen(new MenuScreen(this));
     }
 
     @Override

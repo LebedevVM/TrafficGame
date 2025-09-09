@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,13 +24,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.google.gson.Gson;
+import proto.traffic.game.Starter;
 import proto.traffic.game.map.MapGraph;
 import proto.traffic.game.map.obstacles.ObstacleGraph;
+import proto.traffic.game.map.obstacles.data.MapData;
 import proto.traffic.game.map.obstacles.data.ObstacleData;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.util.Scanner;
 
 public class MenuScreen implements Screen {
     private final Environment environment;
@@ -46,7 +49,11 @@ public class MenuScreen implements Screen {
 
     private final Array<ObstacleData> maps = new Array<>();
 
-    public MenuScreen () {
+    private final Starter starter;
+
+    public MenuScreen (Starter starter) {
+        this.starter = starter;
+
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
@@ -104,11 +111,23 @@ public class MenuScreen implements Screen {
         stage.addActor(label);
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(camController);
+//        inputMultiplexer.addProcessor(camController);
         inputMultiplexer.addProcessor(stage);
+
+        Gson gson = new Gson();
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        Scanner scanner = new Scanner(Gdx.files.internal("MapData.json").read());
+
+        MapData mapData = gson.fromJson(scanner.nextLine(), MapData.class);
+
+        for (String address : mapData.getAddress()) {
+            Scanner addressScanner = new Scanner(Gdx.files.internal(address).read());
+            maps.add(gson.fromJson(addressScanner.nextLine(), ObstacleData.class));
+        }
+
+        changeMap();
 
         leftButton.setVisible(false);
 
@@ -116,7 +135,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 mapIndex -= 1;
-//                changeMap();
+                changeMap();
                 if (mapIndex == 0) {
                     leftButton.setVisible(false);
                 }
@@ -129,7 +148,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 mapIndex += 1;
-//                changeMap();
+                changeMap();
                 if (mapIndex == maps.size - 1) {
                     rightButton.setVisible(false);
                 }
@@ -141,9 +160,13 @@ public class MenuScreen implements Screen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                startGame();
+                starter.setGameScreen(maps.get(mapIndex));
             }
         });
+    }
+
+    private void changeMap () {
+        obstacleGraph.setObstacleData(maps.get(mapIndex));
     }
 
     @Override
@@ -153,7 +176,13 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render (float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        modelBatch.begin(cam);
+        mapGraph.show(modelBatch, environment);
+        obstacleGraph.show(modelBatch, environment);
+        modelBatch.end();
 
         stage.act();
         stage.draw();

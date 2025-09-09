@@ -146,12 +146,6 @@ public class MapGraph {
         for (MapNode zeroNode : zeroNodes) {
             zeroNode.show(batch, environment);
         }
-//        for (MapNode firstNode : firstNodes) {
-//            firstNode.show(batch, environment);
-//        }
-//        for (MapNode secondNode : secondNodes) {
-//            secondNode.show(batch, environment);
-//        }
     }
 
     public float getWidth() {

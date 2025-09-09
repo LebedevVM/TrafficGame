@@ -33,7 +33,7 @@ public class ObstacleConstructor {
     }
 
     public void saveData () {
-        String name = "a";
+        String name = "c";
 
         for (ForestPiece forestPiece : obstacleGraph.getForestPieces().values().toArray()) {
             obstacleData.addForest(forestPiece);
@@ -48,7 +48,7 @@ public class ObstacleConstructor {
         obstacleData.setName(name);
 
         try {
-            FileWriter fileWriter = new FileWriter("C:\\1) TrafficGame\\a.json");
+            FileWriter fileWriter = new FileWriter("C:\\JaySon\\" + name + ".json");
 
             fileWriter.write(new Gson().toJson(obstacleData, ObstacleData.class));
             fileWriter.flush();
